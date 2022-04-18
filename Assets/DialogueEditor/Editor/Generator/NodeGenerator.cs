@@ -25,8 +25,9 @@ public class NodeGenerator : IUpdate
         var panelRectPosition = _panelRect.Get();
         var createButtonRectPosition = _createButtonRect.Get();
         
-        _panelRect.Get().position = 
-            new Vector2(Screen.width - panelRectPosition.width, panelRectPosition.y);
+        _panelRect.Get() = new Rect(
+            new Vector2(Screen.width - panelRectPosition.width, panelRectPosition.y),
+            new Vector2(panelRectPosition.width, Screen.height));
         
         _createButtonRect.Get().position =
             new Vector2(Screen.width - createButtonRectPosition.width, createButtonRectPosition.y);

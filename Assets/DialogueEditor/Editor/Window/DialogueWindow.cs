@@ -9,6 +9,8 @@ public class DialogueWindow : EditorWindow
     private const int NodeGeneratorWidth = 300;
     private const int NodeGeneratorHeight = 300;
 
+    private const int CreateNodeButtonHeight = 30;
+
     [MenuItem("Window/Dialogue Editor")]
      public static void Open()
      {
@@ -35,14 +37,15 @@ public class DialogueWindow : EditorWindow
          var nodeTexture = new CustomSimpleTexture2D(Color.blue, 1, 1);
          var nodeGeneratorTexture = new CustomSimpleTexture2D(Color.black, 1, 1);
 
-         var createButtonRect = new ReferenceRect(new Rect(50,50,100,100));
-         
          var nodeGeneratorPanelRect = new ReferenceRect(
              new Rect(Screen.width - NodeGeneratorWidth, 
                  0, 
                  NodeGeneratorWidth,
-                 NodeGeneratorHeight));
-
+                 Screen.height));
+         
+         var createButtonRect = new ReferenceRect(
+             new Rect(0, 0, nodeGeneratorPanelRect.Get().width, CreateNodeButtonHeight));
+         
          var nodeGenerator =
              new NodeGenerator(
                  new SpeechNodeFactory(nodeTexture, mousePosition), 
