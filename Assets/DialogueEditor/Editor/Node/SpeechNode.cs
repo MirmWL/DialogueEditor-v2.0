@@ -33,7 +33,9 @@ public class SpeechNode : INode
             Debug.Log("click");
 
         if (_dragInput.HasInput())
-            _rect.Get().position = _draggerPosition.Get() + offset;
+            _rect.Get() = new Rect(
+                _draggerPosition.Get() + offset, 
+                new Vector2(rectPosition.width, rectPosition.height));
         
         Event.current.Use();
     }
