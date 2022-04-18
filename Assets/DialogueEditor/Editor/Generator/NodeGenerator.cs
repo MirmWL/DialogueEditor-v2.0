@@ -29,8 +29,9 @@ public class NodeGenerator : IUpdate
             new Vector2(Screen.width - panelRectPosition.width, panelRectPosition.y),
             new Vector2(panelRectPosition.width, Screen.height));
         
-        _createButtonRect.Get().position =
-            new Vector2(Screen.width - createButtonRectPosition.width, createButtonRectPosition.y);
+        _createButtonRect.Get() =
+            new Rect(new Vector2(Screen.width - createButtonRectPosition.width, createButtonRectPosition.y), 
+                new Vector2(createButtonRectPosition.width, createButtonRectPosition.height));
         
         GUI.DrawTexture(panelRectPosition, _texture);
 
