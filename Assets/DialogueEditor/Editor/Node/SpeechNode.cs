@@ -24,10 +24,10 @@ public class SpeechNode : INode
     
     public void Update()
     {
-        var offset = new Vector2(-_rect.Get().width / 2, -_rect.Get().height / 2);
-        
-        GUI.DrawTexture(_rect.Get(), _texture);
-        Debug.Log($"{_index} || position: {_rect.Get()} || texture: {_texture}");
+        var rectPosition = _rect.Get();
+        var offset = new Vector2(-rectPosition.width / 2, -rectPosition.height / 2);
+
+        GUI.DrawTexture(rectPosition, _texture);
 
         if (_clickInput.HasInput())
             Debug.Log("click");

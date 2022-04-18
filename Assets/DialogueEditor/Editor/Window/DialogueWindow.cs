@@ -5,6 +5,9 @@ public class DialogueWindow : EditorWindow
 {
     private PropertiesPanel _propertiesPanel;
     private Updates _updates;
+    
+    private const int NodeGeneratorWidth = 300;
+    private const int NodeGeneratorHeight = 300;
 
     [MenuItem("Window/Dialogue Editor")]
      public static void Open()
@@ -33,7 +36,12 @@ public class DialogueWindow : EditorWindow
          var nodeGeneratorTexture = new CustomSimpleTexture2D(Color.black, 1, 1);
 
          var createButtonRect = new ReferenceRect(new Rect(50,50,100,100));
-         var nodeGeneratorPanelRect = new ReferenceRect(new Rect(50, 50, 150, 150));
+         
+         var nodeGeneratorPanelRect = new ReferenceRect(
+             new Rect(Screen.width - NodeGeneratorWidth, 
+                 0, 
+                 NodeGeneratorWidth,
+                 NodeGeneratorHeight));
 
          var nodeGenerator =
              new NodeGenerator(

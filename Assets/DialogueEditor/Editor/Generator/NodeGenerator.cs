@@ -22,11 +22,20 @@ public class NodeGenerator : IUpdate
 
     public void Update()
     {
-        GUI.DrawTexture(_panelRect.Get(), _texture);
+        var panelRectPosition = _panelRect.Get();
+        var createButtonRectPosition = _createButtonRect.Get();
+        
+        _panelRect.Get().position = 
+            new Vector2(Screen.width - panelRectPosition.width, panelRectPosition.y);
+        
+        _createButtonRect.Get().position =
+            new Vector2(Screen.width - createButtonRectPosition.width, createButtonRectPosition.y);
+        
+        GUI.DrawTexture(panelRectPosition, _texture);
 
         EditorGUILayout.BeginVertical();
 
-        if (GUI.Button(_createButtonRect.Get(), "Create node"))
+        if (GUI.Button(createButtonRectPosition, "Create node"))
         {
             var node = _nodeFactory.Create(new ReferenceRect(new Rect(300,300,50,50)));
             _updates.Add(node);
