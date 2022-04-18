@@ -1,5 +1,4 @@
-﻿
-public class SpeechNodeFactory : IFactory<INode>
+﻿public class SpeechNodeFactory : IFactory<INode>
 {
     private readonly CustomSimpleTexture2D _texture;
     private readonly IPosition _draggerPosition;
