@@ -8,6 +8,7 @@ public class DialogueWindow : EditorWindow
     
     private const int NodeGeneratorWidth = 300;
     private const int CreateNodeButtonHeight = 30;
+    private const int ClickCountToZoomNode = 2;
 
     [MenuItem("Window/Dialogue Editor")]
      public static void Open()
@@ -46,7 +47,7 @@ public class DialogueWindow : EditorWindow
          
          var nodeGenerator =
              new NodeGenerator(
-                 new SpeechNodeFactory(nodeTexture, mousePosition), 
+                 new SpeechNodeFactory(nodeTexture, mousePosition, ClickCountToZoomNode), 
                  _updates,
                  nodeGeneratorTexture,
                  nodeGeneratorPanelRect,

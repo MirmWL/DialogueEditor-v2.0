@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public class SpeechNode : INode
@@ -9,15 +8,17 @@ public class SpeechNode : INode
     
     private readonly IInput _clickInput;
     private readonly IInput _dragInput;
+    private readonly IInput _fewClicksInput;
     private readonly IPosition _draggerPosition;
 
     private string _name = "жиза тиа";
     private string _phrase = "вапапапап";
 
-    public SpeechNode(IInput clickInput, IInput dragInput, IPosition draggerPosition, CustomSimpleTexture2D simpleTexture2D, ReferenceRect rect)
+    public SpeechNode(IInput clickInput, IInput dragInput, IInput fewClicksInput, IPosition draggerPosition, CustomSimpleTexture2D simpleTexture2D, ReferenceRect rect)
     {
         _clickInput = clickInput;
         _dragInput = dragInput;
+        _fewClicksInput = fewClicksInput;
         _draggerPosition = draggerPosition;
         _texture = simpleTexture2D.Get();
         _rect = rect;
@@ -34,8 +35,11 @@ public class SpeechNode : INode
         if (_dragInput.HasInput())
             _rect.Get() = new Rect(
                 _draggerPosition.Get() + offset, 
-                new Vector2(rect.width, rect.height));    
+                new Vector2(rect.width, rect.height));
 
+        if (_fewClicksInput.HasInput())
+            Debug.Log("zoom");    
+        
         GUI.DrawTexture(rect, _texture);
         
         GUILayout.BeginArea(rect);
