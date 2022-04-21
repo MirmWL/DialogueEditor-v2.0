@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public class SpeechNode : INode
@@ -10,24 +11,22 @@ public class SpeechNode : INode
     private readonly IInput _dragInput;
     private readonly IPosition _draggerPosition;
 
-    private readonly int _index;
+    private string _name = "жиза тиа";
+    private string _phrase = "вапапапап";
 
-    public SpeechNode(IInput clickInput, IInput dragInput, IPosition draggerPosition, CustomSimpleTexture2D simpleTexture2D, ReferenceRect rect, int index)
+    public SpeechNode(IInput clickInput, IInput dragInput, IPosition draggerPosition, CustomSimpleTexture2D simpleTexture2D, ReferenceRect rect)
     {
         _clickInput = clickInput;
         _dragInput = dragInput;
         _draggerPosition = draggerPosition;
         _texture = simpleTexture2D.Get();
         _rect = rect;
-        _index = index;
     }
     
     public void Update()
     {
-        var rectPosition = _rect.Get();
-        var offset = new Vector2(-rectPosition.width / 2, -rectPosition.height / 2);
-
-        GUI.DrawTexture(rectPosition, _texture);
+        var rect = _rect.Get();
+        var offset = new Vector2(-rect.width / 2, -rect.height / 2);
 
         if (_clickInput.HasInput())
             Debug.Log("click");
@@ -35,8 +34,15 @@ public class SpeechNode : INode
         if (_dragInput.HasInput())
             _rect.Get() = new Rect(
                 _draggerPosition.Get() + offset, 
-                new Vector2(rectPosition.width, rectPosition.height));
+                new Vector2(rect.width, rect.height));    
+
+        GUI.DrawTexture(rect, _texture);
         
-        Event.current.Use();
+        GUILayout.BeginArea(rect);
+
+        _name = GUILayout.TextField(_name);
+        _phrase = GUILayout.TextArea(_phrase);
+        
+        GUILayout.EndArea();
     }
 }

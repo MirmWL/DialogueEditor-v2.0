@@ -34,12 +34,12 @@ public class NodeGenerator : IUpdate
             new Vector2(createButtonRectPosition.width, createButtonRectPosition.height));
         
         GUI.DrawTexture(panelRectPosition, _texture);
-
+        
         EditorGUILayout.BeginVertical();
 
         if (GUI.Button(createButtonRectPosition, "Create node"))
         {
-            var node = _nodeFactory.Create(new ReferenceRect(new Rect(300,300,50,50)));
+            var node = _nodeFactory.Create(new ReferenceRect(new Rect(300,300,100,100)));
             _updates.Add(node);
         }
         

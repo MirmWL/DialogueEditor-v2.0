@@ -7,8 +7,6 @@ public class DialogueWindow : EditorWindow
     private Updates _updates;
     
     private const int NodeGeneratorWidth = 300;
-    private const int NodeGeneratorHeight = 300;
-
     private const int CreateNodeButtonHeight = 30;
 
     [MenuItem("Window/Dialogue Editor")]
