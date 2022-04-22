@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class DialogueWindow : EditorWindow
@@ -8,7 +9,6 @@ public class DialogueWindow : EditorWindow
     
     private const int NodeGeneratorWidth = 300;
     private const int CreateNodeButtonHeight = 30;
-    private const int ClickCountToZoomNode = 2;
 
     [MenuItem("Window/Dialogue Editor")]
      public static void Open()
@@ -22,6 +22,7 @@ public class DialogueWindow : EditorWindow
      {
          _updates = new Updates();
          InitNodeGenerator();
+         InitEditNodePanel();
      }
 
      private void OnGUI()
@@ -47,12 +48,20 @@ public class DialogueWindow : EditorWindow
          
          var nodeGenerator =
              new NodeGenerator(
-                 new SpeechNodeFactory(nodeTexture, mousePosition, ClickCountToZoomNode), 
+                 new SpeechNodeFactory(nodeTexture, mousePosition), 
                  _updates,
                  nodeGeneratorTexture,
                  nodeGeneratorPanelRect,
                  createButtonRect);
          
          _updates.Add(nodeGenerator);
+     }
+
+     private void InitEditNodePanel()
+     {
+         var editNodePanel = new EditNodePanel(new ReferenceRect(new Rect(0, 0, 100, 100)),
+             new CustomBorderTexture2D(new KeyValuePair<int, int>(100, 100), Color.green, 2, 2));
+         
+         _updates.Add(editNodePanel);
      }
 }

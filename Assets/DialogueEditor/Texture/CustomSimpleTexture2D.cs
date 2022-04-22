@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CustomSimpleTexture2D
+public class CustomSimpleTexture2D : ITexture2D
 {
     private readonly Color _color;
     private readonly int _width;
