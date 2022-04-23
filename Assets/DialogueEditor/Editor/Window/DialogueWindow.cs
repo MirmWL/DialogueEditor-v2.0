@@ -9,6 +9,10 @@ public class DialogueWindow : EditorWindow
     
     private const int NodeGeneratorWidth = 300;
     private const int CreateNodeButtonHeight = 30;
+    
+    private const int EditNodePanelWidth = 200;
+    private const int EditNodePanelHeight= 200;
+    private const float EditNodePanelBorderWidth = 2;
 
     [MenuItem("Window/Dialogue Editor")]
      public static void Open()
@@ -59,8 +63,9 @@ public class DialogueWindow : EditorWindow
 
      private void InitEditNodePanel()
      {
-         var editNodePanel = new EditNodePanel(new ReferenceRect(new Rect(0, 0, 100, 100)),
-             new CustomBorderTexture2D(new KeyValuePair<int, int>(100, 100), Color.green, 2, 2));
+         var editNodePanel = new EditNodePanel(new ReferenceRect(new Rect(0, 0, EditNodePanelWidth, EditNodePanelHeight)),
+             new CustomBorderTexture2D(Color.Lerp(Color.blue, Color.white, 0.5f), 
+                 EditNodePanelBorderWidth, 50, 50));
          
          _updates.Add(editNodePanel);
      }
