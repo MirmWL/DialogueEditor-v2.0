@@ -8,7 +8,8 @@ public class SpeechNode : INode
     private readonly ReferenceRect _pinnedRect;
     private readonly Vector2 _unpinnedSize;
     private readonly Texture2D _texture;
-    private readonly SerializedProperty _eventSerializedProperty;
+    private SerializedObject _eventSerializedObject;
+    
     private EventBase _eventBase;
     
     private readonly IInput _clickInput;
@@ -72,11 +73,17 @@ public class SpeechNode : INode
 
     private void DrawEvent()
     {
-        _eventBase = (EventBase)EditorGUILayout.ObjectField(_eventBase, typeof(EventBase));
-
-        if (_eventBase == null) return;
+        var eventBase = (EventBase)EditorGUILayout.ObjectField(_eventBase, typeof(EventBase));
         
-        var property = new SerializedObject(_eventBase).FindProperty(nameof(_eventBase.Event));
+        if (_eventBase != eventBase)
+        {
+            _eventBase = eventBase;
+            _eventSerializedObject = new SerializedObject(_eventBase);
+        }
+        
+        if (_eventBase == null) return;
+
+        var property = _eventSerializedObject.FindProperty(nameof(_eventBase.Event));
         EditorGUILayout.PropertyField(property);
     }
 }
