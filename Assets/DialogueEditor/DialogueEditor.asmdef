@@ -1,7 +1,8 @@
 {
     "name": "DialogueEditor",
     "references": [
-        "GUID:3ecb787b2e819ce478c970b4e62e425e"
+        "GUID:3ecb787b2e819ce478c970b4e62e425e",
+        "GUID:c32ee129c8824d049bdfa8ecd182f71f"
     ],
     "includePlatforms": [
         "Editor"
