@@ -1,16 +1,18 @@
-﻿public class SpeechNodeFactory : IFactory<INode>
+﻿using UnityEngine;
+
+public class SpeechNodeFactory : IFactory<INode>
 {
-    private readonly CustomSimpleTexture2D _texture;
+    private readonly ITexture2D _texture;
     private readonly IPosition _draggerPosition;
     private readonly IPosition _mousePosition;
-    private readonly int _clickCountToZoomNode;
+    private readonly ReferenceRect _increasedSize;
     
-    public SpeechNodeFactory(CustomSimpleTexture2D texture, IPosition draggerPosition, int clickCountToZoomNode)
+    public SpeechNodeFactory(ITexture2D texture, IPosition draggerPosition, ReferenceRect increasedSize)
     {
         _texture = texture;
         _draggerPosition = draggerPosition;
-        _clickCountToZoomNode = clickCountToZoomNode;
         _mousePosition = new MousePosition();
+        _increasedSize = increasedSize;
     }
 
     public INode Create(ReferenceRect rect)
@@ -20,11 +22,7 @@
         
         var dragInput = new EventInput(
             new PredicateDependentInput(new InRect(rect, _mousePosition), new Drag()));
-        
-        var fewClicksInput = new EventInput(
-            new PredicateDependentInput(
-                new InRect(rect, _mousePosition), new FewClicks(_clickCountToZoomNode)));
-        
-        return new SpeechNode(clickInput, dragInput, fewClicksInput, _draggerPosition, _texture, rect);
+
+        return new SpeechNode(clickInput, dragInput, _draggerPosition, _texture, rect, _increasedSize);
     }
 }

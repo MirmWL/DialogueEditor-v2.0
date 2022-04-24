@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class NodeGenerator : IUpdate
@@ -8,18 +10,20 @@ public class NodeGenerator : IUpdate
     private readonly Texture2D _texture;
     private readonly Updates _updates;
     
-    private readonly IFactory<INode> _nodeFactory;
+    private readonly Storage<INode> _nodeFactory;
 
-    public NodeGenerator(IFactory<INode> nodeFactory, Updates updates, CustomSimpleTexture2D simpleTexture2D, 
+    public NodeGenerator(Storage<INode> nodeFactory, Updates updates, ITexture2D texture, 
         ReferenceRect panelRect, ReferenceRect createButtonRect)
     {
         _nodeFactory = nodeFactory;
         _updates = updates;
-        _texture = simpleTexture2D.Get();
+        _texture = texture.Get();
         _panelRect = panelRect;
         _createButtonRect = createButtonRect;
     }
 
+    public IEnumerable<INode> Nodes => _nodeFactory.Objects;
+    
     public void Update()
     {
         var panelRectPosition = _panelRect.Get();
