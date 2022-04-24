@@ -16,8 +16,8 @@ public class SpeechNode : INode
     private readonly IInput _dragInput;
     private readonly IPosition _draggerPosition;
     
-    private string _name = "жиза тиа";
-    private string _phrase = "вапапапап";
+    private string _name;
+    private string _phrase;
     private bool _pinned;
 
     public SpeechNode(IInput clickInput, IInput dragInput, IPosition draggerPosition, ITexture2D simpleTexture2D, ReferenceRect rect, ReferenceRect pinnedRect)
@@ -38,25 +38,23 @@ public class SpeechNode : INode
         var rect = _rect.Get();
         var offset = new Vector2(-rect.width / 2, -rect.height / 2);
 
-        if (_clickInput.HasInput())
-            Debug.Log("click");
-
-        if (_dragInput.HasInput())
-            _rect.Get() = new Rect(
-                _draggerPosition.Get() + offset, 
-                new Vector2(rect.width, rect.height));
-
         GUI.DrawTexture(rect, _texture);
         
         GUILayout.BeginArea(rect);
 
-        _name = GUILayout.TextField(_name);
-        _phrase = GUILayout.TextArea(_phrase);
+        _name = EditorGUILayout.TextField(_name);
+        _phrase = EditorGUILayout.TextArea(_phrase);
 
         if (_pinned)
             DrawEvent();
         
         GUILayout.EndArea();
+        
+        if (_clickInput.HasInput())
+            Debug.Log("click");
+
+        if (_dragInput.HasInput())
+            _rect.Get() = new Rect(_draggerPosition.Get() + offset, new Vector2(rect.width, rect.height));
     }
     
     public void Pin()
