@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
 
 public class SpeechNode : INode
 {
     private readonly ReferenceRect _rect;
     private readonly ReferenceRect _pinnedRect;
+    private readonly Vector2 _unpinnedSize;
     private readonly Texture2D _texture;
     
     private readonly IInput _clickInput;
@@ -14,6 +16,7 @@ public class SpeechNode : INode
     
     private string _name = "жиза тиа";
     private string _phrase = "вапапапап";
+    private bool _pinned;
 
     public SpeechNode(IInput clickInput, IInput dragInput, IPosition draggerPosition, ITexture2D simpleTexture2D, ReferenceRect rect, ReferenceRect pinnedRect)
     {
@@ -23,6 +26,7 @@ public class SpeechNode : INode
         _texture = simpleTexture2D.Get();
         _rect = rect;
         _pinnedRect = pinnedRect;
+        _unpinnedSize = rect.Get().size;
     }
 
     public Rect Rect => _rect.Get();
@@ -46,13 +50,19 @@ public class SpeechNode : INode
 
         _name = GUILayout.TextField(_name);
         _phrase = GUILayout.TextArea(_phrase);
-  
+        
         GUILayout.EndArea();
     }
     
     public void Pin()
     {
         _rect.Get() = _pinnedRect.Get();
+        _pinned = true;
     }
-
+    
+    public void UnPin()
+    {
+        _rect.Get().size = _unpinnedSize;
+        _pinned = false;
+    }
 }
