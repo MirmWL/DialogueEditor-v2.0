@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEditor;
+using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public class SpeechNode : INode
@@ -8,10 +8,11 @@ public class SpeechNode : INode
     private readonly ReferenceRect _pinnedRect;
     private readonly Vector2 _unpinnedSize;
     private readonly Texture2D _texture;
+    private readonly SerializedProperty _eventSerializedProperty;
+    private EventBase _eventBase;
     
     private readonly IInput _clickInput;
     private readonly IInput _dragInput;
-    private readonly IInput _pinnedDragInput;
     private readonly IPosition _draggerPosition;
     
     private string _name = "жиза тиа";
@@ -50,6 +51,9 @@ public class SpeechNode : INode
 
         _name = GUILayout.TextField(_name);
         _phrase = GUILayout.TextArea(_phrase);
+
+        if (_pinned)
+            DrawEvent();
         
         GUILayout.EndArea();
     }
@@ -64,5 +68,15 @@ public class SpeechNode : INode
     {
         _rect.Get().size = _unpinnedSize;
         _pinned = false;
+    }
+
+    private void DrawEvent()
+    {
+        _eventBase = (EventBase)EditorGUILayout.ObjectField(_eventBase, typeof(EventBase));
+
+        if (_eventBase == null) return;
+        
+        var property = new SerializedObject(_eventBase).FindProperty(nameof(_eventBase.Event));
+        EditorGUILayout.PropertyField(property);
     }
 }
