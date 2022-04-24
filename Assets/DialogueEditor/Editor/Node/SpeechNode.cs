@@ -4,25 +4,28 @@ using Debug = UnityEngine.Debug;
 public class SpeechNode : INode
 {
     private readonly ReferenceRect _rect;
+    private readonly ReferenceRect _pinnedRect;
     private readonly Texture2D _texture;
     
     private readonly IInput _clickInput;
     private readonly IInput _dragInput;
+    private readonly IInput _pinnedDragInput;
     private readonly IPosition _draggerPosition;
-    private readonly float _zoomSizeCoefficient;
     
     private string _name = "жиза тиа";
     private string _phrase = "вапапапап";
-    private bool _zoomed;
-    
-    public SpeechNode(IInput clickInput, IInput dragInput, IPosition draggerPosition, ITexture2D simpleTexture2D, ReferenceRect rect)
+
+    public SpeechNode(IInput clickInput, IInput dragInput, IPosition draggerPosition, ITexture2D simpleTexture2D, ReferenceRect rect, ReferenceRect pinnedRect)
     {
         _clickInput = clickInput;
         _dragInput = dragInput;
         _draggerPosition = draggerPosition;
         _texture = simpleTexture2D.Get();
         _rect = rect;
+        _pinnedRect = pinnedRect;
     }
+
+    public Rect Rect => _rect.Get();
     
     public void Update()
     {
@@ -45,6 +48,11 @@ public class SpeechNode : INode
         _phrase = GUILayout.TextArea(_phrase);
   
         GUILayout.EndArea();
+    }
+    
+    public void Pin()
+    {
+        _rect.Get() = _pinnedRect.Get();
     }
 
 }
