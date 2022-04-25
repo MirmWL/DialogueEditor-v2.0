@@ -43,7 +43,15 @@ public class NodeGenerator : IUpdate
 
         if (GUI.Button(createButtonRectPosition, "Create node"))
         {
-            var node = _nodeFactory.Create(new ReferenceRect(new Rect(300,300,100,100)));
+            var rect = new ReferenceRect(new Rect(300, 300, 100, 100));
+            
+            var dragRect = new ReferenceRect(
+                new Rect(new OffsetPosition(
+                        new PositionWrap(rect.Get().position), 
+                        new PositionWrap(new Vector2(50, 0))).Get(), 
+                    new Vector2(50, 50)));
+            
+            var node = _nodeFactory.Create(rect, dragRect);
             _updates.Add(node);
         }
         

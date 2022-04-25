@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-public class SpeechNodeNodeFactory : INodeFactory<INode>
+public class SpeechNodeFactory : INodeFactory<INode>
 {
     private readonly ITexture2D _texture;
     private readonly IPosition _draggerPosition;
     private readonly IPosition _mousePosition;
     private readonly ReferenceRect _pinnedRect;
     
-    public SpeechNodeNodeFactory(ITexture2D texture, IPosition draggerPosition, ReferenceRect pinnedRect)
+    public SpeechNodeFactory(ITexture2D texture, IPosition draggerPosition, ReferenceRect pinnedRect)
     {
         _texture = texture;
         _draggerPosition = draggerPosition;
@@ -23,6 +23,6 @@ public class SpeechNodeNodeFactory : INodeFactory<INode>
         var dragInput = new EventInput(
             new PredicateDependentInput(new InRect(rect, _mousePosition), new Drag()));
 
-        return new SpeechNode(clickInput, dragInput, _draggerPosition, _texture, rect, _pinnedRect, dragRect);
+        return new SpeechNode(clickInput, dragInput, _draggerPosition, _texture, rect, _pinnedRect);
     }
 }
