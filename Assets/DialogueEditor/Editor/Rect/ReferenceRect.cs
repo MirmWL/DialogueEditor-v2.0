@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ReferenceRect
+public class ReferenceRect : IReferenceRect
 {
     private Rect _rect;
 

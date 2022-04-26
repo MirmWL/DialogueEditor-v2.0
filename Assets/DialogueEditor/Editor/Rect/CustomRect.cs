@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CustomRect
+public class CustomRect : IRect
 {
     private readonly IPosition _position;
     private readonly IPosition _size;
