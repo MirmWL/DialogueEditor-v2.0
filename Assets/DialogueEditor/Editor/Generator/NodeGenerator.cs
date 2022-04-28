@@ -10,6 +10,7 @@ public class NodeGenerator : IUpdate
     private readonly Updates _updates;
     
     private readonly Storage<INode> _nodeFactory;
+    private IRect _rect;
 
     public NodeGenerator(Storage<INode> nodeFactory, Updates updates, ITexture2D texture, 
         ReferenceRect panelRect, ReferenceRect createButtonRect)
@@ -42,13 +43,16 @@ public class NodeGenerator : IUpdate
 
         if (GUI.Button(createButtonRectPosition, "Create node"))
         {
-            var rect = new ReferenceRect(new Rect(300, 300, 100, 100));
+            var rectPosition = new ReferencePosition(new Vector2(300, 300));
+            var rectSize = new Vector2(100, 100);
             
-            var dragRect = new ReferenceRect(
-                new Rect(new OffsetPosition(
-                        new PositionWrap(rect.Get().position), 
-                        new PositionWrap(new Vector2(50, 0))).Get(), 
-                    new Vector2(50, 50)));
+            var rect = new ReferenceRect(new Rect(rectPosition.Get(), rectSize));
+
+            var dragOffset = new PositionWrap(new Vector2(50, 0));
+            var dragOffsetPosition = new OffsetPosition(new PositionAdapter(rectPosition), dragOffset);
+            var dragSize = new PositionWrap(new Vector2(50, 50));
+            
+            var dragRect = new ReferenceRect(new CustomRect(dragOffsetPosition, dragSize).Get());
             
             var node = _nodeFactory.Create(rect, dragRect);
             _updates.Add(node);

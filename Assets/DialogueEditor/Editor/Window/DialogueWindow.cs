@@ -44,6 +44,8 @@ public class DialogueWindow : EditorWindow
          var nodeTexture = new CustomSimpleTexture2D(Color.blue, 1, 1);
          var nodeGeneratorTexture = new CustomSimpleTexture2D(Color.black, 1, 1);
 
+         var nodeDragTexture = new CustomSimpleTexture2D(Color.green, 1, 1);
+
          var nodeGeneratorPanelRect = new ReferenceRect(
              new Rect(Screen.width - NodeGeneratorWidth, 
                  0, 
@@ -53,7 +55,7 @@ public class DialogueWindow : EditorWindow
          var createButtonRect = new ReferenceRect(
              new Rect(0, 0, nodeGeneratorPanelRect.Get().width, CreateNodeButtonHeight));
          
-         var nodeFactory = new Storage<INode>(new SpeechNodeFactory(nodeTexture, mousePosition, _editNodePanelRect));
+         var nodeFactory = new Storage<INode>(new SpeechNodeFactory(nodeTexture, nodeDragTexture, mousePosition, _editNodePanelRect));
          
          _nodeGenerator = 
              new NodeGenerator(nodeFactory, 
