@@ -4,9 +4,9 @@ using Debug = UnityEngine.Debug;
 
 public class SpeechNode : INode
 {
-    private readonly IReferenceRect _rect;
-    private readonly IReferenceRect _pinnedRect;
-    private readonly IReferenceRect _dragRect;
+    private readonly ReferenceRect _rect;
+    private readonly ReferenceRect _pinnedRect;
+    private readonly ReferenceRect _dragRect;
     private readonly Vector2 _unpinnedSize;
     private readonly Texture2D _texture;
     private readonly Texture2D _dragTexture;
@@ -22,7 +22,7 @@ public class SpeechNode : INode
     private string _phrase;
     private bool _pinned;
 
-    public SpeechNode(IInput clickInput, IInput dragInput, IPosition draggerPosition, ITexture2D simpleTexture2D, ITexture2D  dragTexture, IReferenceRect rect, IReferenceRect pinnedRect, IReferenceRect dragRect)
+    public SpeechNode(IInput clickInput, IInput dragInput, IPosition draggerPosition, ITexture2D simpleTexture2D, ITexture2D  dragTexture, ReferenceRect rect, ReferenceRect pinnedRect, ReferenceRect dragRect)
     {
         _clickInput = clickInput;
         _dragInput = dragInput;

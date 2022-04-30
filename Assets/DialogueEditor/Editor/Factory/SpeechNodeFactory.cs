@@ -24,6 +24,7 @@ public class SpeechNodeFactory : INodeFactory<INode>
         var dragInput = new EventInput(
             new PredicateDependentInput(new InRect(dragRect, _mousePosition), new Drag()));
 
-        return new SpeechNode(clickInput, dragInput, _draggerPosition, _texture,_dragTexture ,rect, _pinnedRect, dragRect);
+        return new SpeechNode(clickInput, dragInput, _draggerPosition, _texture, _dragTexture, rect, _pinnedRect,
+            dragRect);
     }
 }

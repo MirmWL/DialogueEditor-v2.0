@@ -10,8 +10,7 @@ public class NodeGenerator : IUpdate
     private readonly Updates _updates;
     
     private readonly Storage<INode> _nodeFactory;
-    private IRect _rect;
-
+    
     public NodeGenerator(Storage<INode> nodeFactory, Updates updates, ITexture2D texture, 
         ReferenceRect panelRect, ReferenceRect createButtonRect)
     {
