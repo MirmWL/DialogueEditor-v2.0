@@ -4,10 +4,8 @@ using Debug = UnityEngine.Debug;
 
 public class SpeechNode : INode
 {
-    private readonly ReferenceRect _rect;
-    private readonly ReferenceRect _pinnedRect;
-    private readonly ReferenceRect _dragRect;
-    private readonly Vector2 _unpinnedSize;
+    private readonly IRect _rect;
+    private readonly IRect _dragRect;
     private readonly Texture2D _texture;
     private readonly Texture2D _dragTexture;
     private SerializedObject _eventSerializedObject;
@@ -15,24 +13,26 @@ public class SpeechNode : INode
     private EventBase _eventBase;
     
     private readonly IInput _clickInput;
-    private readonly IInput _dragInput;
-    private readonly IPosition _draggerPosition;
+    private readonly IPredicate _pinned;
     
     private string _name;
     private string _phrase;
-    private bool _pinned;
+    
 
-    public SpeechNode(IInput clickInput, IInput dragInput, IPosition draggerPosition, ITexture2D simpleTexture2D, ITexture2D  dragTexture, ReferenceRect rect, ReferenceRect pinnedRect, ReferenceRect dragRect)
+    public SpeechNode(
+        IInput clickInput, 
+        ITexture2D simpleTexture2D,
+        ITexture2D  dragTexture,
+        IRect rect, 
+        IRect dragRect, 
+        IPredicate pinned)
     {
         _clickInput = clickInput;
-        _dragInput = dragInput;
-        _draggerPosition = draggerPosition;
         _texture = simpleTexture2D.Get();
         _dragTexture = dragTexture.Get();
         _rect = rect;
-        _pinnedRect = pinnedRect;
-        _unpinnedSize = rect.Get().size;
         _dragRect = dragRect;
+        _pinned = pinned;
     }
 
     public Rect Rect => _rect.Get();
@@ -40,7 +40,6 @@ public class SpeechNode : INode
     public void Update()
     {
         var rect = _rect.Get();
-        var offset = new Vector2(-rect.width / 2, -rect.height / 2);
 
         GUI.DrawTexture(rect, _texture);
         GUI.DrawTexture(_dragRect.Get(), _dragTexture);
@@ -50,7 +49,7 @@ public class SpeechNode : INode
         _name = EditorGUILayout.TextField(_name);
         _phrase = EditorGUILayout.TextArea(_phrase);
 
-        if (_pinned)
+        if (_pinned.Execute())
             DrawEvent();
         
         GUILayout.EndArea();
@@ -58,20 +57,6 @@ public class SpeechNode : INode
         if (_clickInput.HasInput())
             Debug.Log("click");
 
-        if (_dragInput.HasInput())
-            _rect.Get() = new Rect(_draggerPosition.Get() + offset, new Vector2(rect.width, rect.height));
-    }
-    
-    public void Pin()
-    {
-        _rect.Get() = _pinnedRect.Get();
-        _pinned = true;
-    }
-    
-    public void UnPin()
-    {
-        _rect.Get().size = _unpinnedSize;
-        _pinned = false;
     }
 
     private void DrawEvent()
