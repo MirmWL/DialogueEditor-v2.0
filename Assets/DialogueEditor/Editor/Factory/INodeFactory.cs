@@ -1,4 +1,4 @@
-﻿public interface INodeFactory<out T> where T : INode
+﻿public interface INodeFactory
 {
-    T Create(ReferenceRect rect, ReferenceRect dragRect);
+    INode Create(IRect rect, IRect dragRect);
 }
