@@ -10,14 +10,15 @@ public class Updates
         _updates = new List<IUpdate>();
     }
 
-    public void Add(IUpdate gameUpdate)
+    public void Add(params IUpdate[] updates)
     {
-        _updates.Add(gameUpdate);
+        foreach (var update in updates)
+            _updates.Add(update);
     }
-
-    private void Remove(IUpdate gameUpdate)
+    
+    private void Remove(IUpdate update)
     {
-        var index = _updates.FindIndex(s => s == gameUpdate);
+        var index = _updates.FindIndex(s => s == update);
         var lastIndex = _updates.Count - 1;
         _updates[index] = _updates[lastIndex];
         _updates.RemoveAt(lastIndex);
