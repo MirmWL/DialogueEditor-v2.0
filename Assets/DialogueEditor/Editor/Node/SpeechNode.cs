@@ -6,15 +6,15 @@ public class SpeechNode : INode
 {
     private readonly IRect _rect;
     private readonly IRect _dragRect;
+    private readonly IInput _clickInput;
+    private readonly IPredicate _pinned;
+    
     private readonly Texture2D _texture;
     private readonly Texture2D _dragTexture;
     private SerializedObject _eventSerializedObject;
     
     private EventBase _eventBase;
-    
-    private readonly IInput _clickInput;
-    private readonly IPredicate _pinned;
-    
+
     private string _name;
     private string _phrase;
     
