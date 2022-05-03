@@ -35,8 +35,6 @@ public class SpeechNode : INode
         _pinned = pinned;
     }
 
-    public Rect Rect => _rect.Get();
-    
     public void Update()
     {
         var rect = _rect.Get();
