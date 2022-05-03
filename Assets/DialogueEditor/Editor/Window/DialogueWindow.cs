@@ -3,12 +3,10 @@ using UnityEngine;
 
 public class DialogueWindow : EditorWindow
 {
-    private PropertiesPanel _propertiesPanel;
     private Updates _updates;
     private NodeGenerator _nodeGenerator;
-    
-    private readonly ReferenceRect _editNodePanelRect = new ReferenceRect(
-        new Rect(new Vector2(0,0), new Vector2(EditNodePanelWidth, EditNodePanelHeight)));
+
+    private IRect _editNodePanelRect;
     
     private const int NodeGeneratorWidth = 300;
     private const int CreateNodeButtonHeight = 30;
@@ -27,7 +25,11 @@ public class DialogueWindow : EditorWindow
 
      private void OnEnable()
      {
+         var editNodePanelSize = new PositionAdapter(new Vector2(EditNodePanelWidth, EditNodePanelHeight));
+         _editNodePanelRect = new CustomRect(new PositionAdapter(Vector2.zero), editNodePanelSize);
+
          _updates = new Updates();
+         
          InitNodeGenerator();
          InitEditNodePanel();
      }
@@ -40,40 +42,46 @@ public class DialogueWindow : EditorWindow
      private void InitNodeGenerator()
      {
          var mousePosition = new MousePosition();
-        
+         var screenSize = new ScreenSize();
+         
          var nodeTexture = new CustomSimpleTexture2D(Color.blue, 1, 1);
          var nodeGeneratorTexture = new CustomSimpleTexture2D(Color.black, 1, 1);
-
          var nodeDragTexture = new CustomSimpleTexture2D(Color.green, 1, 1);
+         
+         var nodeGeneratorPanelSize = new OffsetPosition(new YVector(screenSize),
+             new PositionAdapter(new Vector2(NodeGeneratorWidth, 0)));
 
-         var nodeGeneratorPanelRect = new ReferenceRect(
-             new Rect(Screen.width - NodeGeneratorWidth, 
-                 0, 
-                 NodeGeneratorWidth,
-                 Screen.height));
+         var nodeGeneratorPanelPosition = new OffsetPosition(
+             new XVector(screenSize), 
+             new PositionAdapter(-new Vector2(NodeGeneratorWidth, 0)));
          
-         var createButtonRect = new ReferenceRect(
-             new Rect(0, 0, nodeGeneratorPanelRect.Get().width, CreateNodeButtonHeight));
+         var nodeGeneratorPanelRect = new CustomRect(nodeGeneratorPanelPosition, nodeGeneratorPanelSize);
+
+         var createNodeButtonSize =
+             new PositionAdapter(new Vector2(nodeGeneratorPanelRect.Get().width, CreateNodeButtonHeight));
          
-         var nodeFactory = new Storage<INode>(new SpeechNodeFactory(nodeTexture, nodeDragTexture, mousePosition, _editNodePanelRect));
+         var createNodeButtonRect = new CustomRect(nodeGeneratorPanelPosition, createNodeButtonSize);
+
+         var nodeFactory = new SpeechNodeFactory(nodeTexture, nodeDragTexture);
          
          _nodeGenerator = 
              new NodeGenerator(nodeFactory, 
                  _updates,
                  nodeGeneratorTexture,
                  nodeGeneratorPanelRect,
-                 createButtonRect);
+                 createNodeButtonRect,
+                 mousePosition,
+                 _editNodePanelRect);
          
-         _updates.Add(_nodeGenerator);
+         _updates.Add(createNodeButtonRect, nodeGeneratorPanelRect, _nodeGenerator);
      }
 
      private void InitEditNodePanel()
      {
-         var mouseUpInput = new EventInput(new MouseUpInput());
          var color = Color.Lerp(Color.blue, Color.white, 0.5f);
          var texture = new CustomBorderTexture2D(color, EditNodePanelBorderWidth, EditNodePanelWidth, EditNodePanelHeight);
          
-         var editNodePanel = new EditNodePanel(mouseUpInput, texture, _nodeGenerator.Nodes, _editNodePanelRect);
+         var editNodePanel = new EditNodePanel(texture, _editNodePanelRect);
          _updates.Add(editNodePanel);
      }
 }
