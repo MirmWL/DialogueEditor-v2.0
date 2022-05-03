@@ -46,9 +46,11 @@ public class NodeGenerator : IUpdate
                 new InRect(_editNodePanelRect, nodeRectPosition));
 
             var nodeRect = new RectFork(pinPredicate, _editNodePanelRect, nodeUnpinnedRect);
-
-            var dragOffset = new PositionAdapter(new Vector2(50, 0));
-            var dragOffsetPosition = new OffsetPosition(nodeRectPosition, dragOffset);
+            
+            var dragOffsetPosition = new OffsetPosition(
+                nodeRectPosition, 
+                new PositionAdapter(new Vector2(50, 0)));
+            
             var dragSize = new PositionAdapter(new Vector2(50, 50));
             
             var dragUnpinnedRect = new CustomRect(dragOffsetPosition, dragSize);

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Drag : IInput
+public class MouseDrag : IInput
 {
     public bool HasInput()
     {
