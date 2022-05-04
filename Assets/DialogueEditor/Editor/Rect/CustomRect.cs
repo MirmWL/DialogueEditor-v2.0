@@ -21,6 +21,7 @@ public class CustomRect : IRect, IUpdate
 
     public void Update()
     {
+        Debug.Log($"{_position.Get()}");
         _rect = new Rect(_position.Get(), _size.Get());
     }
 }
