@@ -54,7 +54,6 @@ public class SpeechNode : INode
         
         if (_clickInput.HasInput())
             Debug.Log("click");
-
     }
 
     private void DrawEvent()

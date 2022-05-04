@@ -1,5 +1,7 @@
-﻿using UnityEditor;
+﻿using System.Diagnostics;
+using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class NodeGenerator : IUpdate
 {
