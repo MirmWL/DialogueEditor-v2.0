@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MouseUpInput : IInput
+public class MouseUp : IInput
 {
     public bool HasInput()
     {

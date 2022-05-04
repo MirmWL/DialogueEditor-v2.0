@@ -54,7 +54,7 @@ public class NodeGenerator : IUpdate
 
         var unpinnedRect = new CustomRect(unpinnedPosition, new PositionAdapter(unpinnedSize));
 
-        var pinPredicate = new InputDependentPredicate(new MouseUpInput(), new InRect(_editNodePanelRect, unpinnedPosition));
+        var pinPredicate = new InputDependentPredicate(new MouseUp(), new InRect(_editNodePanelRect, unpinnedPosition));
 
         var rect = new RectFork(pinPredicate, _editNodePanelRect, unpinnedRect);
         

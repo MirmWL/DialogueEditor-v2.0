@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MouseDownInput : IInput
+public class MouseDown : IInput
 {
     public bool HasInput()
     {
