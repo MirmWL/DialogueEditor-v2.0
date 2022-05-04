@@ -46,21 +46,18 @@ public class NodeGenerator : IUpdate
         var dragUnpinnedCenter = new PositionAdapter(-dragUnpinnedSize.Get() / 2);
         var dragUnpinnedPosition = new OffsetPosition(_nodeDraggerPosition, dragUnpinnedCenter);
         var dragUnpinnedRect = new CustomRect(dragUnpinnedPosition, dragUnpinnedSize);
-            
+        var inDragRect = new InRect(dragUnpinnedRect, _nodeDraggerPosition);
+        
         var unpinnedSize = new Vector2(100, 100);
         var unpinnedPosition = new OffsetPosition(dragUnpinnedPosition, 
             new PositionAdapter(-new Vector2(unpinnedSize.x, unpinnedSize.y / 4)));
 
         var unpinnedRect = new CustomRect(unpinnedPosition, new PositionAdapter(unpinnedSize));
-            
-        var pinPredicate = new InputDependentPredicate(
-            new MouseUpInput(), 
-            new InRect(_editNodePanelRect, unpinnedPosition));
+
+        var pinPredicate = new InputDependentPredicate(new MouseUpInput(), new InRect(_editNodePanelRect, unpinnedPosition));
 
         var rect = new RectFork(pinPredicate, _editNodePanelRect, unpinnedRect);
-
-        var inDragRect = new InRect(dragUnpinnedRect, _nodeDraggerPosition);
-            
+        
         var node = _nodeFactory.Create(rect, dragUnpinnedRect);
 
         var mouseDragInput = new PredicateDependentInput(inDragRect, new MouseDrag());
