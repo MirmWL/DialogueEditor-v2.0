@@ -1,4 +1,6 @@
-﻿public class InputDependentPredicate : IPredicate
+﻿using UnityEngine;
+
+public class InputDependentPredicate : IPredicate
 {
     private readonly IInput _input;
     private readonly IPredicate _predicate;
