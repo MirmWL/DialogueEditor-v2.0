@@ -7,6 +7,7 @@ public class DialogueWindow : EditorWindow
     private NodeGenerator _nodeGenerator;
 
     private IRect _editNodePanelRect;
+    private IPosition _editNodePanelPosition;
     
     private const int NodeGeneratorWidth = 300;
     private const int CreateNodeButtonHeight = 30;
@@ -26,7 +27,8 @@ public class DialogueWindow : EditorWindow
      private void OnEnable()
      {
          var editNodePanelSize = new PositionAdapter(new Vector2(EditNodePanelWidth, EditNodePanelHeight));
-         _editNodePanelRect = new CustomRect(new PositionAdapter(Vector2.zero), editNodePanelSize);
+         _editNodePanelPosition = new PositionAdapter(Vector2.zero);
+         _editNodePanelRect = new CustomRect(_editNodePanelPosition, editNodePanelSize);
 
          _updates = new Updates();
          
@@ -71,7 +73,8 @@ public class DialogueWindow : EditorWindow
                  nodeGeneratorPanelRect,
                  createNodeButtonRect,
                  mousePosition,
-                 _editNodePanelRect);
+                 _editNodePanelRect,
+                 _editNodePanelPosition);
          
          _updates.Add(createNodeButtonRect, nodeGeneratorPanelRect, _nodeGenerator);
      }

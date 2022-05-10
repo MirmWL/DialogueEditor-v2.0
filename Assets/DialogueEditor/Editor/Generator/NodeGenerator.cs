@@ -1,13 +1,12 @@
-﻿using System.Diagnostics;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public class NodeGenerator : IUpdate
 {
     private readonly IRect _panelRect;
     private readonly IRect _createButtonRect;
     private readonly IPosition _nodeDraggerPosition;
+    private readonly IPosition _editNodePanelPosition;
     private readonly IRect _editNodePanelRect;
     private readonly INodeFactory _nodeFactory;
 
@@ -15,7 +14,7 @@ public class NodeGenerator : IUpdate
     private readonly Updates _updates;
 
     public NodeGenerator(INodeFactory nodeFactory, Updates updates, ITexture2D texture, 
-        IRect panelRect, IRect createButtonRect, IPosition nodeDraggerPosition, IRect editNodePanelRect)
+        IRect panelRect, IRect createButtonRect, IPosition nodeDraggerPosition, IRect editNodePanelRect, IPosition editNodePanelPosition)
     {
         _nodeFactory = nodeFactory;
         _updates = updates;
@@ -24,6 +23,7 @@ public class NodeGenerator : IUpdate
         _createButtonRect = createButtonRect;
         _nodeDraggerPosition = nodeDraggerPosition;
         _editNodePanelRect = editNodePanelRect;
+        _editNodePanelPosition = editNodePanelPosition;
     }
     
     public void Update()
@@ -46,25 +46,30 @@ public class NodeGenerator : IUpdate
         var dragUnpinnedCenter = new PositionAdapter(-dragUnpinnedSize.Get() / 2);
         var dragUnpinnedPosition = new OffsetPosition(_nodeDraggerPosition, dragUnpinnedCenter);
         var dragUnpinnedRect = new CustomRect(dragUnpinnedPosition, dragUnpinnedSize);
+
+        var dragPinnedSize = new PositionAdapter(new Vector2(25, _editNodePanelRect.Get().y / 1.25f));
+        var dragPinnedCenter = new PositionAdapter(-dragPinnedSize.Get() / 2);
+        var dragPinnedPosition = new OffsetPosition(_editNodePanelPosition, dragPinnedCenter);
+        var dragPinnedRect = new CustomRect(dragPinnedPosition, dragPinnedSize);
         var inDragRect = new InRect(dragUnpinnedRect, _nodeDraggerPosition);
         
         var unpinnedSize = new Vector2(100, 100);
         var unpinnedPosition = new OffsetPosition(dragUnpinnedPosition, 
             new PositionAdapter(-new Vector2(unpinnedSize.x, unpinnedSize.y / 4)));
-
         var unpinnedRect = new CustomRect(unpinnedPosition, new PositionAdapter(unpinnedSize));
-
-        var pinPredicate = new InputDependentPredicate(new MouseUp(), new InRect(_editNodePanelRect, unpinnedPosition));
-
-        var rect = new RectFork(pinPredicate, _editNodePanelRect, unpinnedRect);
         
-        var node = _nodeFactory.Create(rect, dragUnpinnedRect);
+        var pinPredicate = new InRect(_editNodePanelRect, dragUnpinnedPosition);
+        var rect = new RectFork(pinPredicate, _editNodePanelRect, unpinnedRect);
+        var dragRect = new RectFork(pinPredicate, dragPinnedRect, dragUnpinnedRect);
+        
+        var node = _nodeFactory.Create(rect, dragRect);
 
-        var mouseDragInput = new PredicateDependentInput(inDragRect, new MouseDrag());
+        var dragInput = new PredicateDependentInput(inDragRect, new MouseDrag());
             
-        var updateRect = new InputDependentUpdate(new EventInput(mouseDragInput), unpinnedRect);
-        var updateDragRect = new InputDependentUpdate(mouseDragInput, dragUnpinnedRect);
-            
-        _updates.Add(updateDragRect, updateRect, node);
+        var updateRect = new InputDependentUpdate(new EventInput(dragInput), unpinnedRect);
+        var updateDragUnpinnedRect = new InputDependentUpdate(dragInput, dragUnpinnedRect);
+        var updateDragPinnedRect = new InputDependentUpdate(dragInput, dragPinnedRect);
+
+        _updates.Add(updateDragUnpinnedRect, updateRect, updateDragPinnedRect, node);
     }
 }
