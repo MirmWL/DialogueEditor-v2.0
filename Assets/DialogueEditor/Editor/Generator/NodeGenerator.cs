@@ -45,18 +45,28 @@ public class NodeGenerator : IUpdate
         var dragUnpinnedSize = new PositionAdapter(new Vector2(50, 50));
         var dragUnpinnedPosition = GetDragUnpinnedPosition(dragUnpinnedSize);
         var dragUnpinnedRect = new CustomRect(dragUnpinnedPosition, dragUnpinnedSize);
-        
         var dragPinnedRect = GetDragPinnedRect();
-
-        var unpinnedRect = GetNodeUnpinnedRect(dragUnpinnedPosition);
         
-        var pinPredicate = new InRect(_editNodePanelRect, dragUnpinnedPosition);
+        var unpinnedSize = new Vector2(100, 100);
+        var unpinnedPosition = new OffsetPosition(dragUnpinnedPosition, 
+            new PositionAdapter(-new Vector2(unpinnedSize.x, unpinnedSize.y / 4)));
+        
+        var unpinnedRect = new CustomRect(unpinnedPosition, new PositionAdapter(unpinnedSize));
+        
+        var pinPredicate = new Predicates(new IPredicate[]
+        {
+            new InRect(_editNodePanelRect, _nodeDraggerPosition),
+            new InRect(dragUnpinnedRect, _nodeDraggerPosition)
+        });
         
         var rect = new RectFork(pinPredicate, _editNodePanelRect, unpinnedRect);
         var dragRect = new RectFork(pinPredicate, dragPinnedRect, dragUnpinnedRect);
         var inDragRect = new InRect(dragRect, _nodeDraggerPosition);
         
-        var node = _nodeFactory.Create(rect, dragRect);
+        var inRect = new InRect(rect, _nodeDraggerPosition);
+        var clickInput = new EventInput(new PredicateDependentInput(inRect, new MouseClick()));
+        
+        var node = _nodeFactory.Create(rect, dragRect, pinPredicate, clickInput);
 
         var dragInput = new PredicateDependentInput(inDragRect, new MouseDrag());
             
@@ -69,25 +79,16 @@ public class NodeGenerator : IUpdate
 
     private CustomRect GetDragPinnedRect()
     {
-        var dragPinnedSize = new PositionAdapter(new Vector2(25, _editNodePanelRect.Get().size.y / 1.25f));
+        var dragPinnedSize = new PositionAdapter(new Vector2(25, _editNodePanelRect.Get().size.y));
         var dragPinnedPosition =
             new XVector(new OffsetPosition(_editNodePanelPosition, new PositionAdapter(_editNodePanelRect.Get().size)));
         
         return new CustomRect(dragPinnedPosition, dragPinnedSize);
     }
-
+    
     private IPosition GetDragUnpinnedPosition(IPosition dragUnpinnedSize)
     {
         var dragUnpinnedCenter = new PositionAdapter(-dragUnpinnedSize.Get() / 2);
         return new OffsetPosition(_nodeDraggerPosition, dragUnpinnedCenter);
-    }
-
-    private CustomRect GetNodeUnpinnedRect(IPosition dragUnpinnedPosition)
-    {
-        var unpinnedSize = new Vector2(100, 100);
-        var unpinnedPosition = new OffsetPosition(dragUnpinnedPosition, 
-            new PositionAdapter(-new Vector2(unpinnedSize.x, unpinnedSize.y / 4)));
-        
-        return new CustomRect(unpinnedPosition, new PositionAdapter(unpinnedSize));
     }
 }
