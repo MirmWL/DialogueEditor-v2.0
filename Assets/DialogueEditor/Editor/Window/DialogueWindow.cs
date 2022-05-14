@@ -43,40 +43,40 @@ public class DialogueWindow : EditorWindow
 
      private void InitNodeGenerator()
      {
-         var mousePosition = new MousePosition();
+         var nodeDraggerPosition = new MousePosition();
          var screenSize = new ScreenSize();
          
+         var panelTexture = new CustomSimpleTexture2D(Color.black, 1, 1);
          var nodeTexture = new CustomSimpleTexture2D(Color.blue, 1, 1);
-         var nodeGeneratorTexture = new CustomSimpleTexture2D(Color.black, 1, 1);
-         var nodeDragTexture = new CustomSimpleTexture2D(Color.green, 1, 1);
+         var dragTexture = new CustomSimpleTexture2D(Color.green, 1, 1);
          
-         var nodeGeneratorPanelSize = new OffsetPosition(new YVector(screenSize),
+         var panelSize = new OffsetPosition(new YVector(screenSize),
              new PositionAdapter(new Vector2(NodeGeneratorWidth, 0)));
 
-         var nodeGeneratorPanelPosition = new OffsetPosition(
+         var panelPosition = new OffsetPosition(
              new XVector(screenSize), 
              new PositionAdapter(-new Vector2(NodeGeneratorWidth, 0)));
          
-         var nodeGeneratorPanelRect = new CustomRect(nodeGeneratorPanelPosition, nodeGeneratorPanelSize);
+         var panelRect = new CustomRect(panelPosition, panelSize);
 
          var createNodeButtonSize =
-             new PositionAdapter(new Vector2(nodeGeneratorPanelRect.Get().width, CreateNodeButtonHeight));
+             new PositionAdapter(new Vector2(panelRect.Get().width, CreateNodeButtonHeight));
          
-         var createNodeButtonRect = new CustomRect(nodeGeneratorPanelPosition, createNodeButtonSize);
+         var createNodeButtonRect = new CustomRect(panelPosition, createNodeButtonSize);
 
-         var nodeFactory = new SpeechNodeFactory(nodeTexture, nodeDragTexture);
+         var nodeFactory = new SpeechNodeFactory(nodeTexture, dragTexture);
          
          _nodeGenerator = 
              new NodeGenerator(nodeFactory, 
                  _updates,
-                 nodeGeneratorTexture,
-                 nodeGeneratorPanelRect,
+                 panelTexture,
+                 panelRect,
                  createNodeButtonRect,
-                 mousePosition,
+                 nodeDraggerPosition,
                  _editNodePanelRect,
                  _editNodePanelPosition);
          
-         _updates.Add(createNodeButtonRect, nodeGeneratorPanelRect, _nodeGenerator);
+         _updates.Add(createNodeButtonRect, panelRect, _nodeGenerator);
      }
 
      private void InitEditNodePanel()
