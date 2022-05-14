@@ -9,7 +9,7 @@ public class SpeechNode : INode
     private readonly IInput _clickInput;
     private readonly IPredicate _pinned;
     
-    private readonly Texture2D _texture;
+    private readonly Texture2D _mainTexture;
     private readonly Texture2D _dragTexture;
     private SerializedObject _eventSerializedObject;
     
@@ -21,14 +21,14 @@ public class SpeechNode : INode
 
     public SpeechNode(
         IInput clickInput, 
-        ITexture2D simpleTexture2D,
-        ITexture2D  dragTexture,
+        ITexture2D mainTexture,
+        ITexture2D dragTexture,
         IRect rect, 
         IRect dragRect, 
         IPredicate pinned)
     {
         _clickInput = clickInput;
-        _texture = simpleTexture2D.Get();
+        _mainTexture = mainTexture.Get();
         _dragTexture = dragTexture.Get();
         _rect = rect;
         _dragRect = dragRect;
@@ -39,7 +39,7 @@ public class SpeechNode : INode
     {
         var rect = _rect.Get();
 
-        GUI.DrawTexture(rect, _texture);
+        GUI.DrawTexture(rect, _mainTexture);
         GUI.DrawTexture(_dragRect.Get(), _dragTexture);
         
         GUILayout.BeginArea(rect);
