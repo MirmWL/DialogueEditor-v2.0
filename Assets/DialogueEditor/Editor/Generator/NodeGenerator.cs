@@ -53,13 +53,25 @@ public class NodeGenerator : IUpdate
         
         var unpinnedRect = new CustomRect(unpinnedPosition, new PositionAdapter(unpinnedSize));
         
-        var pinPredicate = new Predicates(new IPredicate[]
+        /*var pinPredicate = new Predicates(new IPredicate[]
         {
             new InRect(_editNodePanelRect, _nodeDraggerPosition),
             new InRect(dragUnpinnedRect, _nodeDraggerPosition)
-        });
+        });*/
+
+        var pinPredicate =
+            new InputDependentPredicate(new MouseUp(), new InRect(_editNodePanelRect, _nodeDraggerPosition));
+
+        var unpinPredicate =
+            new InputDependentPredicate(new MouseDrag(), new OutRect(_editNodePanelRect, _nodeDraggerPosition));
+
+        var rect = new TwoPredicateRectFork(
+            pinPredicate, 
+            unpinPredicate, 
+            _editNodePanelRect, 
+            unpinnedRect,
+            unpinnedRect);
         
-        var rect = new RectFork(pinPredicate, _editNodePanelRect, unpinnedRect);
         var dragRect = new RectFork(pinPredicate, dragPinnedRect, dragUnpinnedRect);
         var inDragRect = new InRect(dragRect, _nodeDraggerPosition);
         
