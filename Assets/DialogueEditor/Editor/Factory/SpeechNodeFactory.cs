@@ -12,9 +12,6 @@ public class SpeechNodeFactory : INodeFactory
 
     public INode Create(IRect rect, IRect dragRect, IPredicate pinnedPredicate, IInput clickInput)
     {
-        //var inRect = new InRect(rect, _draggerPosition);
-        //var click = new EventInput(new PredicateDependentInput(inRect, clickInput));
-        
         return new SpeechNode(clickInput, _texture, _dragTexture, rect, dragRect, pinnedPredicate);
     }
 }
