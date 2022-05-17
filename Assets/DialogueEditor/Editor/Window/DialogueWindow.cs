@@ -74,7 +74,8 @@ public class DialogueWindow : EditorWindow
                  createNodeButtonRect,
                  nodeDraggerPosition,
                  _editNodePanelRect,
-                 _editNodePanelPosition);
+                 _editNodePanelPosition,
+                 new MouseDrag());
          
          _updates.Add(createNodeButtonRect, panelRect, _nodeGenerator);
      }
