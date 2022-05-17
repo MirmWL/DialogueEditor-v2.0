@@ -9,12 +9,13 @@ public class NodeGenerator : IUpdate
     private readonly IPosition _editNodePanelPosition;
     private readonly IRect _editNodePanelRect;
     private readonly INodeFactory _nodeFactory;
-
+    private readonly IInput _dragInput;
+    
     private readonly Texture2D _texture;
     private readonly Updates _updates;
 
     public NodeGenerator(INodeFactory nodeFactory, Updates updates, ITexture2D texture, 
-        IRect panelRect, IRect createButtonRect, IPosition nodeDraggerPosition, IRect editNodePanelRect, IPosition editNodePanelPosition)
+        IRect panelRect, IRect createButtonRect, IPosition nodeDraggerPosition, IRect editNodePanelRect, IPosition editNodePanelPosition, IInput dragInput)
     {
         _nodeFactory = nodeFactory;
         _updates = updates;
@@ -24,6 +25,7 @@ public class NodeGenerator : IUpdate
         _nodeDraggerPosition = nodeDraggerPosition;
         _editNodePanelRect = editNodePanelRect;
         _editNodePanelPosition = editNodePanelPosition;
+        _dragInput = dragInput;
     }
     
     public void Update()
@@ -66,8 +68,8 @@ public class NodeGenerator : IUpdate
 
         var node = _nodeFactory.Create(rect, dragRect, pinPredicate, clickInput);
 
-        var dragInput = new PredicateDependentInput(inDragRect, new MouseDrag());
-            
+        var dragInput = new PredicateDependentInput(inDragRect, _dragInput);
+
         var updateRect = new InputDependentUpdate(new EventInput(dragInput), unpinnedRect);
         var updateDragUnpinnedRect = new InputDependentUpdate(dragInput, dragUnpinnedRect);
         var updateDragPinnedRect = new InputDependentUpdate(dragInput, dragPinnedRect);
