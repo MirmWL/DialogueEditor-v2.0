@@ -46,38 +46,24 @@ public class NodeGenerator : IUpdate
         var dragUnpinnedPosition = GetDragUnpinnedPosition(dragUnpinnedSize);
         var dragUnpinnedRect = new CustomRect(dragUnpinnedPosition, dragUnpinnedSize);
         var dragPinnedRect = GetDragPinnedRect();
-        
+
         var unpinnedSize = new Vector2(100, 100);
-        var unpinnedPosition = new OffsetPosition(dragUnpinnedPosition, 
+        var unpinnedPosition = new OffsetPosition(dragUnpinnedPosition,
             new PositionAdapter(-new Vector2(unpinnedSize.x, unpinnedSize.y / 4)));
-        
+
         var unpinnedRect = new CustomRect(unpinnedPosition, new PositionAdapter(unpinnedSize));
+
+        var pinPredicate = new CachedPredicate(new Not(new InputToPredicateAdapter(_dragInput)),
+            new InRect(_editNodePanelRect, dragUnpinnedPosition));
         
-        /*var pinPredicate = new Predicates(new IPredicate[]
-        {
-            new InRect(_editNodePanelRect, _nodeDraggerPosition),
-            new InRect(dragUnpinnedRect, _nodeDraggerPosition)
-        });*/
-
-        var pinPredicate =
-            new InputDependentPredicate(new MouseUp(), new InRect(_editNodePanelRect, _nodeDraggerPosition));
-
-        var unpinPredicate =
-            new InputDependentPredicate(new MouseDrag(), new OutRect(_editNodePanelRect, _nodeDraggerPosition));
-
-        var rect = new TwoPredicateRectFork(
-            pinPredicate, 
-            unpinPredicate, 
-            _editNodePanelRect, 
-            unpinnedRect,
-            unpinnedRect);
-        
+        var rect = new RectFork(pinPredicate, _editNodePanelRect, unpinnedRect);
         var dragRect = new RectFork(pinPredicate, dragPinnedRect, dragUnpinnedRect);
+
         var inDragRect = new InRect(dragRect, _nodeDraggerPosition);
-        
+
         var inRect = new InRect(rect, _nodeDraggerPosition);
         var clickInput = new EventInput(new PredicateDependentInput(inRect, new MouseClick()));
-        
+
         var node = _nodeFactory.Create(rect, dragRect, pinPredicate, clickInput);
 
         var dragInput = new PredicateDependentInput(inDragRect, new MouseDrag());
