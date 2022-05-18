@@ -4,9 +4,9 @@ using System.Linq;
 
 public class Predicates : IPredicate
 {
-    private readonly IEnumerable<IPredicate> _predicates;
+    private readonly IPredicate[] _predicates;
 
-    public Predicates(IEnumerable<IPredicate> predicates)
+    public Predicates(params IPredicate[] predicates)
     {
         _predicates = predicates;
     }
