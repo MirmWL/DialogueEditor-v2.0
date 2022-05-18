@@ -14,8 +14,16 @@ public class NodeGenerator : IUpdate
     private readonly Texture2D _texture;
     private readonly Updates _updates;
 
-    public NodeGenerator(INodeFactory nodeFactory, Updates updates, ITexture2D texture, 
-        IRect panelRect, IRect createButtonRect, IPosition nodeDraggerPosition, IRect editNodePanelRect, IPosition editNodePanelPosition, IInput dragInput)
+    public NodeGenerator(
+        INodeFactory nodeFactory, 
+        Updates updates, 
+        ITexture2D texture, 
+        IRect panelRect, 
+        IRect createButtonRect,
+        IPosition nodeDraggerPosition,
+        IRect editNodePanelRect, 
+        IPosition editNodePanelPosition,
+        IInput dragInput)
     {
         _nodeFactory = nodeFactory;
         _updates = updates;
@@ -30,13 +38,11 @@ public class NodeGenerator : IUpdate
     
     public void Update()
     {
-        var createButtonRectPosition = _createButtonRect.Get();
-
         GUI.DrawTexture(_panelRect.Get(), _texture);
         
         EditorGUILayout.BeginVertical();
 
-        if (GUI.Button(createButtonRectPosition, "Create node"))
+        if (GUI.Button(_createButtonRect.Get(), "Create node"))
             Create();
         
         EditorGUILayout.EndVertical();
@@ -55,7 +61,18 @@ public class NodeGenerator : IUpdate
 
         var unpinnedRect = new CustomRect(unpinnedPosition, new PositionAdapter(unpinnedSize));
 
-        var pinPredicate = new CachedPredicate(new Not(new InputToPredicateAdapter(_dragInput)),
+        var editPanelRectWithDragRect = new CustomRect(
+            _editNodePanelPosition,
+            new OffsetPosition(
+                new PositionAdapter(_editNodePanelRect.Get().size),
+                new XVector(new PositionAdapter(dragPinnedRect.Get().size))));
+
+        Debug.Log(editPanelRectWithDragRect.Get());
+        
+        var inEditPanelWithDragRect = new InRect(editPanelRectWithDragRect, _nodeDraggerPosition);
+
+        var pinPredicate = new CachedPredicate(
+            new Not(new InputDependentPredicate(_dragInput, inEditPanelWithDragRect)),
             new InRect(_editNodePanelRect, dragUnpinnedPosition));
         
         var rect = new RectFork(pinPredicate, _editNodePanelRect, unpinnedRect);
