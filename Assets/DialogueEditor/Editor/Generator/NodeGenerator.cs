@@ -60,16 +60,14 @@ public class NodeGenerator : IUpdate
             new PositionAdapter(-new Vector2(unpinnedSize.x, unpinnedSize.y / 4)));
 
         var unpinnedRect = new CustomRect(unpinnedPosition, new PositionAdapter(unpinnedSize));
-
+ 
         var editPanelRectWithDragRect = new CustomRect(
             _editNodePanelPosition,
             new OffsetPosition(
                 new PositionAdapter(_editNodePanelRect.Get().size),
                 new XVector(new PositionAdapter(dragPinnedRect.Get().size))));
 
-        Debug.Log(editPanelRectWithDragRect.Get());
-        
-        var inEditPanelWithDragRect = new InRect(editPanelRectWithDragRect, _nodeDraggerPosition);
+        var inEditPanelWithDragRect = new InRect(editPanelRectWithDragRect, dragUnpinnedPosition);
 
         var pinPredicate = new CachedPredicate(
             new Not(new InputDependentPredicate(_dragInput, inEditPanelWithDragRect)),
