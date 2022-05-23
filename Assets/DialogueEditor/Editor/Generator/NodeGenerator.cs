@@ -91,7 +91,7 @@ public class NodeGenerator : IUpdate
         var updateRect = new InputDependentUpdate(new EventInput(dragInput), unpinnedRect);
         var updateDragUnpinnedRect = new InputDependentUpdate(dragInput, dragUnpinnedRect);
 
-        _updates.Add(updateDragUnpinnedRect, updateRect, node);
+        _updates.Add(updateDragUnpinnedRect, updateRect, node, createConnectionButtonRect);
     }
 
     private CustomRect GetDragPinnedRect()
