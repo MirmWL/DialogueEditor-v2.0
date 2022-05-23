@@ -77,7 +77,14 @@ public class NodeGenerator : IUpdate
         var inRect = new InRect(rect, _nodeDraggerPosition);
         var clickInput = new EventInput(new PredicateDependentInput(inRect, new MouseClick()));
 
-        var node = _nodeFactory.Create(rect, dragRect, pinPredicate, clickInput);
+        var createConnectionButtonPosition = new PositionFork(pinPredicate, 
+            new OffsetPosition(_editNodePanelPosition, new XVector(new PositionAdapter(_editNodePanelRect.Get().size))),
+            new OffsetPosition(unpinnedPosition, new XVector(new PositionAdapter(-new Vector2(25, 25)))));
+
+        var createConnectionButtonRect =
+            new CustomRect(createConnectionButtonPosition, new PositionAdapter(new Vector2(25, 25)));
+        
+        var node = _nodeFactory.Create(rect, dragRect, createConnectionButtonRect, pinPredicate, clickInput);
 
         var dragInput = new PredicateDependentInput(inDragRect, _dragInput);
 
