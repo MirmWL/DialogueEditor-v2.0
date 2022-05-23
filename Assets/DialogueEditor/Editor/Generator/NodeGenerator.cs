@@ -61,17 +61,13 @@ public class NodeGenerator : IUpdate
 
         var unpinnedRect = new CustomRect(unpinnedPosition, new PositionAdapter(unpinnedSize));
  
-        var editPanelRectWithDragRect = new CustomRect(
-            _editNodePanelPosition,
-            new OffsetPosition(
-                new PositionAdapter(_editNodePanelRect.Get().size),
-                new XVector(new PositionAdapter(dragPinnedRect.Get().size))));
-
-        var inEditPanelWithDragRect = new InRect(editPanelRectWithDragRect, dragUnpinnedPosition);
-
+        var inEditPanel = new Predicates(
+            new InRect(dragUnpinnedRect, _nodeDraggerPosition),
+            new InRect(_editNodePanelRect, dragUnpinnedPosition)); 
+        
         var pinPredicate = new CachedPredicate(
-            new Not(new InputDependentPredicate(_dragInput, inEditPanelWithDragRect)),
-            new InRect(_editNodePanelRect, dragUnpinnedPosition));
+            new Not(new InputToPredicateAdapter(_dragInput)),
+            inEditPanel);
         
         var rect = new RectFork(pinPredicate, _editNodePanelRect, unpinnedRect);
         var dragRect = new RectFork(pinPredicate, dragPinnedRect, dragUnpinnedRect);
@@ -87,9 +83,8 @@ public class NodeGenerator : IUpdate
 
         var updateRect = new InputDependentUpdate(new EventInput(dragInput), unpinnedRect);
         var updateDragUnpinnedRect = new InputDependentUpdate(dragInput, dragUnpinnedRect);
-        var updateDragPinnedRect = new InputDependentUpdate(dragInput, dragPinnedRect);
 
-        _updates.Add(updateDragUnpinnedRect, updateRect, updateDragPinnedRect, node);
+        _updates.Add(updateDragUnpinnedRect, updateRect, node);
     }
 
     private CustomRect GetDragPinnedRect()
