@@ -6,6 +6,7 @@ public class SpeechNode : INode
 {
     private readonly IRect _rect;
     private readonly IRect _dragRect;
+    private readonly IRect _createConnectionButtonRect;
     private readonly IInput _clickInput;
     private readonly IPredicate _pinned;
     
@@ -24,7 +25,8 @@ public class SpeechNode : INode
         ITexture2D dragTexture,
         IRect rect, 
         IRect dragRect, 
-        IPredicate pinned)
+        IPredicate pinned,
+        IRect createConnectionButtonRect)
     {
         _clickInput = clickInput;
         _mainTexture = mainTexture.Get();
@@ -32,6 +34,7 @@ public class SpeechNode : INode
         _rect = rect;
         _dragRect = dragRect;
         _pinned = pinned;
+        _createConnectionButtonRect = createConnectionButtonRect;
     }
 
     public void Update()
@@ -40,6 +43,7 @@ public class SpeechNode : INode
 
         GUI.DrawTexture(rect, _mainTexture);
         GUI.DrawTexture(_dragRect.Get(), _dragTexture);
+        DrawCreateConnectionButton();
         
         GUILayout.BeginArea(rect);
 
@@ -69,6 +73,16 @@ public class SpeechNode : INode
 
         var property = _eventSerializedObject.FindProperty(nameof(_eventBase.Event));
         EditorGUILayout.PropertyField(property);
+    }
+
+    private void DrawCreateConnectionButton()
+    {
+        GUILayout.BeginArea(_createConnectionButtonRect.Get());
+        
+        Debug.Log(_createConnectionButtonRect.Get());
+        GUI.Button(_createConnectionButtonRect.Get(), "+");
+        
+        GUILayout.EndArea();
     }
 
 }
