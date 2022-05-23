@@ -1,4 +1,6 @@
-﻿public class CachedPredicate : IPredicate
+﻿using UnityEngine;
+
+public class CachedPredicate : IPredicate
 {
     private readonly IPredicate _returnCached;
     private readonly IPredicate _predicate;
