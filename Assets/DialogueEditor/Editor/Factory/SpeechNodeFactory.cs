@@ -10,8 +10,8 @@ public class SpeechNodeFactory : INodeFactory
         _dragTexture = dragTexture;
     }
 
-    public INode Create(IRect rect, IRect dragRect, IPredicate pinnedPredicate, IInput clickInput)
+    public INode Create(IRect rect, IRect dragRect,IRect createConnectionButtonRect, IPredicate pinnedPredicate, IInput clickInput)
     {
-        return new SpeechNode(clickInput, _texture, _dragTexture, rect, dragRect, pinnedPredicate);
+        return new SpeechNode(clickInput, _texture, _dragTexture, rect, dragRect, pinnedPredicate, createConnectionButtonRect);
     }
 }

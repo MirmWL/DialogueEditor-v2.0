@@ -1,4 +1,4 @@
 ﻿public interface INodeFactory
 {
-    INode Create(IRect rect, IRect dragRect, IPredicate pinnedPredicate, IInput clickInput);
+    INode Create(IRect rect, IRect dragRect,IRect createConnectionButtonRect, IPredicate pinnedPredicate, IInput clickInput);
 }
