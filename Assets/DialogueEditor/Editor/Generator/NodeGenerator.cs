@@ -79,7 +79,7 @@ public class NodeGenerator : IUpdate
 
         var createConnectionButtonPosition = new PositionFork(pinPredicate, 
             new OffsetPosition(_editNodePanelPosition, new XVector(new PositionAdapter(_editNodePanelRect.Get().size))),
-            new OffsetPosition(unpinnedPosition, new XVector(new PositionAdapter(-new Vector2(25, 25)))));
+            new OffsetPosition(unpinnedPosition, new XVector(new PositionAdapter(unpinnedSize))));
 
         var createConnectionButtonRect =
             new CustomRect(createConnectionButtonPosition, new PositionAdapter(new Vector2(25, 25)));
@@ -88,10 +88,11 @@ public class NodeGenerator : IUpdate
 
         var dragInput = new PredicateDependentInput(inDragRect, _dragInput);
 
-        var updateRect = new InputDependentUpdate(new EventInput(dragInput), unpinnedRect);
+        var updateRect = new InputDependentUpdate(dragInput, unpinnedRect);
         var updateDragUnpinnedRect = new InputDependentUpdate(dragInput, dragUnpinnedRect);
+        var updateCreateConnectionButtonRect = new InputDependentUpdate(new EventInput(dragInput), createConnectionButtonRect);
 
-        _updates.Add(updateDragUnpinnedRect, updateRect, node, createConnectionButtonRect);
+        _updates.Add(updateDragUnpinnedRect, updateRect, node, updateCreateConnectionButtonRect);
     }
 
     private CustomRect GetDragPinnedRect()

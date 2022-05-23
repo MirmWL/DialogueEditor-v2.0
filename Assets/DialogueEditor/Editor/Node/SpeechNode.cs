@@ -77,12 +77,7 @@ public class SpeechNode : INode
 
     private void DrawCreateConnectionButton()
     {
-        GUILayout.BeginArea(_createConnectionButtonRect.Get());
-        
-        Debug.Log(_createConnectionButtonRect.Get());
         GUI.Button(_createConnectionButtonRect.Get(), "+");
-        
-        GUILayout.EndArea();
     }
 
 }
