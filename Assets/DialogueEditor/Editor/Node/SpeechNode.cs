@@ -71,4 +71,5 @@ public class SpeechNode : INode
         var property = _eventSerializedObject.FindProperty(nameof(_eventBase.Event));
         EditorGUILayout.PropertyField(property);
     }
+
 }
