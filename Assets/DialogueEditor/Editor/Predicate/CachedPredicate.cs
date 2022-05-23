@@ -9,6 +9,7 @@
     {
         _returnCached = returnCached;
         _predicate = predicate;
+        _cached = _predicate.Execute();
     }
 
     public bool Execute()
