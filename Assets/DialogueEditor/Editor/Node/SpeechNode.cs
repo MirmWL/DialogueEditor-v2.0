@@ -18,7 +18,6 @@ public class SpeechNode : INode
     private string _name;
     private string _phrase;
     
-
     public SpeechNode(
         IInput clickInput, 
         ITexture2D mainTexture,
