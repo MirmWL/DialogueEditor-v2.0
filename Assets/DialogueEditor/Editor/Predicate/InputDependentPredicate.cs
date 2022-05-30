@@ -1,5 +1,4 @@
 ﻿using EditorInput;
-using UnityEngine;
 
 public class InputDependentPredicate : IPredicate
 {

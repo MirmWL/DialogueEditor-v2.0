@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-
+﻿
 public class CachedPredicate : IPredicate
 {
     private readonly IPredicate _returnCached;
