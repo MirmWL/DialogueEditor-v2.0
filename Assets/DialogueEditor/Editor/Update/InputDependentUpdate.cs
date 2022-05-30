@@ -1,4 +1,6 @@
-﻿public class InputDependentUpdate : IUpdate
+﻿using EditorInput;
+
+public class InputDependentUpdate : IUpdate
 {
     private readonly IInput _input;
     private readonly IUpdate _update;

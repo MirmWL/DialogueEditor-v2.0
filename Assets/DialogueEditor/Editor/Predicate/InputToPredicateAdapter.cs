@@ -1,4 +1,6 @@
-﻿public class InputToPredicateAdapter : IPredicate
+﻿using EditorInput;
+
+public class InputToPredicateAdapter : IPredicate
 {
     private readonly IInput _input;
 

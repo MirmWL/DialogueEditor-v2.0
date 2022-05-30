@@ -1,4 +1,6 @@
 ﻿
+using EditorInput;
+
 public class SpeechNodeFactory : INodeFactory
 {
     private readonly ITexture2D _texture;

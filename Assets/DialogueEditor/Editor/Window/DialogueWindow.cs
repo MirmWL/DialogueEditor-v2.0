@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using EditorInput.Mouse;
+using UnityEditor;
 using UnityEngine;
 
 public class DialogueWindow : EditorWindow

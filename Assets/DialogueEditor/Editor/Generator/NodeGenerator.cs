@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using EditorInput;
+using EditorInput.Mouse;
+using UnityEditor;
 using UnityEngine;
 
 public class NodeGenerator : IUpdate
