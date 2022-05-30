@@ -1,5 +1,4 @@
-﻿using EditorInput;
-using EditorInput.Mouse;
+﻿using EditorInput.Mouse;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,6 +17,7 @@ public class DialogueWindow : EditorWindow
     private const int EditNodePanelWidth = 300;
     private const int EditNodePanelHeight = 300;
     private const float EditNodePanelBorderWidth = 2;
+    private const float DragPinnedWidth = 25;
     private const float NodeHeight = 100;
     private const float NodeWidth = 100;
     private const float NodeDragWidth = 25;
@@ -89,7 +89,7 @@ public class DialogueWindow : EditorWindow
          var dragUnpinnedSize = new PositionAdapter(new Vector2(NodeDragWidth, NodeHeight));
          var dragUnpinnedPosition = new OffsetPosition(nodeDraggerPosition, new PositionAdapter(-dragUnpinnedSize.Get() / 2));
 
-         var dragPinnedSize = new PositionAdapter(new Vector2(25, _editNodePanelRect.Get().size.y));
+         var dragPinnedSize = new PositionAdapter(new Vector2(DragPinnedWidth, _editNodePanelRect.Get().size.y));
          var dragPinnedPosition = new XVector(new OffsetPosition(_editNodePanelPosition,
              new PositionAdapter(_editNodePanelRect.Get().size)));
          var dragPinnedRect = new CustomRect(dragPinnedPosition, dragPinnedSize);
@@ -120,7 +120,8 @@ public class DialogueWindow : EditorWindow
              _updates
              );
      }
-     
+
+
      private void InitEditNodePanel()
      {
          var color = Color.Lerp(Color.blue, Color.white, 0.5f);
