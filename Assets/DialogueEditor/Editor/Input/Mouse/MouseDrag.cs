@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 
-public class MouseDrag : IInput
+namespace EditorInput.Mouse
 {
-    public bool HasInput()
+    public class MouseDrag : IInput
     {
-        return Event.current.type == EventType.MouseDrag;
+        public bool HasInput()
+        {
+            return Event.current.type == EventType.MouseDrag;
+        }
     }
 }

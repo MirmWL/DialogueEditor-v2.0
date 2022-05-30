@@ -1,16 +1,19 @@
-﻿public class PredicateDependentInput : IInput
+﻿namespace EditorInput
 {
-    private readonly IPredicate _predicate;
-    private readonly IInput _input;
-
-    public PredicateDependentInput(IPredicate predicate, IInput input)
+    public class PredicateDependentInput : IInput
     {
-        _predicate = predicate;
-        _input = input;
-    }
+        private readonly IPredicate _predicate;
+        private readonly IInput _input;
 
-    public bool HasInput()
-    {
-        return _predicate.Execute() && _input.HasInput();
+        public PredicateDependentInput(IPredicate predicate, IInput input)
+        {
+            _predicate = predicate;
+            _input = input;
+        }
+
+        public bool HasInput()
+        {
+            return _predicate.Execute() && _input.HasInput();
+        }
     }
 }

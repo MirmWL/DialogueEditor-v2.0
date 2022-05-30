@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 
-public class MouseClick : IInput
+namespace EditorInput.Mouse
 {
-    public bool HasInput()
+    public class MouseClick : IInput
     {
-        return Event.current.type == EventType.MouseDown;
+        public bool HasInput()
+        {
+            return Event.current.type == EventType.MouseDown;
+        }
     }
 }

@@ -1,4 +1,8 @@
-﻿public interface IInput
+﻿namespace EditorInput
 {
-    bool HasInput();
+    public interface IInput
+    {
+        bool HasInput();
+    }
+
 }

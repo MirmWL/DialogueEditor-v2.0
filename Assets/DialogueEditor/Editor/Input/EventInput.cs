@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
 
-public class EventInput : IInput
+namespace EditorInput
 {
-    private readonly IInput _input;
-
-    public EventInput(IInput input)
+    public class EventInput : IInput
     {
-        _input = input;
-    }
+        private readonly IInput _input;
 
-    public bool HasInput()
-    {
-        var hasInput = _input.HasInput();
+        public EventInput(IInput input)
+        {
+            _input = input;
+        }
+
+        public bool HasInput()
+        {
+            var hasInput = _input.HasInput();
         
-        if(hasInput)
-            Event.current.Use();
+            if(hasInput)
+                Event.current.Use();
         
-        return hasInput;
+            return hasInput;
+        }
     }
 }
