@@ -18,6 +18,9 @@ public class DialogueWindow : EditorWindow
     private const int EditNodePanelWidth = 300;
     private const int EditNodePanelHeight = 300;
     private const float EditNodePanelBorderWidth = 2;
+    private const float NodeHeight = 100;
+    private const float NodeWidth = 100;
+    private const float NodeDragWidth = 25;
 
     [MenuItem("Window/Dialogue Editor")]
      public static void Open()
@@ -83,7 +86,7 @@ public class DialogueWindow : EditorWindow
          
          var nodeDraggerPosition = new MousePosition();
          
-         var dragUnpinnedSize = new PositionAdapter(new Vector2(50, 50));
+         var dragUnpinnedSize = new PositionAdapter(new Vector2(NodeDragWidth, NodeHeight));
          var dragUnpinnedPosition = new OffsetPosition(nodeDraggerPosition, new PositionAdapter(-dragUnpinnedSize.Get() / 2));
 
          var dragPinnedSize = new PositionAdapter(new Vector2(25, _editNodePanelRect.Get().size.y));
@@ -91,8 +94,8 @@ public class DialogueWindow : EditorWindow
              new PositionAdapter(_editNodePanelRect.Get().size)));
          var dragPinnedRect = new CustomRect(dragPinnedPosition, dragPinnedSize);
 
-         var unpinnedPosition = new OffsetPosition(dragUnpinnedPosition, new PositionAdapter(-new Vector2(dragUnpinnedSize.Get().x, dragUnpinnedSize.Get().y / 4)));
-         var unpinnedSize = new PositionAdapter(new Vector2(100, 100));
+         var unpinnedPosition = new OffsetPosition(dragUnpinnedPosition, new XVector(dragUnpinnedSize));
+         var unpinnedSize = new PositionAdapter(new Vector2(NodeHeight, NodeWidth));
 
          var createConnectionButtonPinnedPosition = new OffsetPosition(_editNodePanelPosition, new XVector(new PositionAdapter(_editNodePanelRect.Get().size)));
 
