@@ -72,8 +72,7 @@ public class DialogueWindow : EditorWindow
          
          _updates.Add(createNodeButtonRect, panelRect, _nodeGenerator);
      }
-
-
+     
      private void InitNodeFactory()
      {
          var nodeTexture = new CustomSimpleTexture2D(Color.blue, 1, 1);
@@ -117,11 +116,17 @@ public class DialogueWindow : EditorWindow
              unpinnedPosition, 
              createConnectionButtonPinnedPosition,
              createConnectionButtonUnpinnedPosition,
-             _updates
+             _updates,
+             GetCustomButtonFactory()
              );
      }
 
-
+     private CustomButtonFactory GetCustomButtonFactory()
+     {
+         var texture = new CustomSimpleTexture2D(Color.cyan, 1, 1);
+         return new CustomButtonFactory(texture, "+");
+     }
+     
      private void InitEditNodePanel()
      {
          var color = Color.Lerp(Color.blue, Color.white, 0.5f);

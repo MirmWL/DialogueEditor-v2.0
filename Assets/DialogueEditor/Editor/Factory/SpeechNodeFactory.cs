@@ -17,6 +17,7 @@ public class SpeechNodeFactory : INodeFactory
     private readonly IInput _dragInput;
     private readonly IInput _selectInput;
     private readonly Updates _updates;
+    private readonly CustomButtonFactory _customButtonFactory;
 
     public SpeechNodeFactory(
         ITexture2D nodeTexture, 
@@ -33,7 +34,8 @@ public class SpeechNodeFactory : INodeFactory
         IPosition unpinnedPosition, 
         IPosition createConnectionButtonPinnedPosition,
         IPosition createConnectionButtonUnpinnedPosition,
-        Updates updates)
+        Updates updates,
+        CustomButtonFactory customButtonFactory)
 
     {
         _nodeTexture = nodeTexture;
@@ -51,6 +53,7 @@ public class SpeechNodeFactory : INodeFactory
         _createConnectionButtonPinnedPosition = createConnectionButtonPinnedPosition;
         _createConnectionButtonUnpinnedPosition = createConnectionButtonUnpinnedPosition;
         _updates = updates;
+        _customButtonFactory = customButtonFactory;
     }
 
     public INode Create()
@@ -92,9 +95,16 @@ public class SpeechNodeFactory : INodeFactory
             rect,
             dragRect,
             pinPredicate,
-            createConnectionButtonRect); 
-      
-        _updates.Add(updateDragUnpinnedRect, updateRect, node, updateCreateConnectionButtonRect);
+            createConnectionButtonRect);
+
+        var createConnectionButton = _customButtonFactory.Create(createConnectionButtonRect);
+
+        _updates.Add(updateDragUnpinnedRect,
+            updateRect,
+            node,
+            updateCreateConnectionButtonRect,
+            createConnectionButton);
+        
         return node;
     }
 }
