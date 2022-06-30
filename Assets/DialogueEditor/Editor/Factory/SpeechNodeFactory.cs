@@ -94,8 +94,7 @@ public class SpeechNodeFactory : INodeFactory
             _dragTexture,
             rect,
             dragRect,
-            pinPredicate,
-            createConnectionButtonRect);
+            pinPredicate);
 
         var createConnectionButton = _customButtonFactory.Create(createConnectionButtonRect);
 
