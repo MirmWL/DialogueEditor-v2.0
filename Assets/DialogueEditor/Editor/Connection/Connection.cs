@@ -3,17 +3,17 @@ using UnityEditor;
 
 public class Connection : IUpdate
 {
-    private readonly KeyValuePair<IRect, IRect> _connection;
+    private readonly KeyValuePair<IPosition, IPosition> _connection;
     
-    public Connection(KeyValuePair<IRect, IRect> connection)
+    public Connection(KeyValuePair<IPosition, IPosition> connection)
     {
         _connection = connection;
     }
 
     public void Update()
     {
-        var firstPoint = _connection.Key.Get().position;
-        var secondPoint = _connection.Value.Get().position;
+        var firstPoint = _connection.Key.Get(); 
+        var secondPoint = _connection.Value.Get();
         
         Handles.DrawLine(firstPoint, secondPoint);
     }
