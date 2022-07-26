@@ -5,11 +5,9 @@ using UnityEngine;
 public class DialogueWindow : EditorWindow
 {
     private Updates _updates;
-    private NodeGenerator _nodeGenerator;
 
     private IRect _editNodePanelRect;
     private IPosition _editNodePanelPosition;
-    private SpeechNodeFactory _nodeFactory;
     
     private const int NodeGeneratorWidth = 300;
     private const int CreateNodeButtonHeight = 30;
@@ -50,9 +48,45 @@ public class DialogueWindow : EditorWindow
 
      private void InitNodeGenerator()
      {
-         var screenSize = new ScreenSize();
+       
          
          var panelTexture = new CustomSimpleTexture2D(Color.black, 1, 1);
+         
+         
+     }
+     
+     private void InitNodeFactory()
+     {
+         var nodeTexture = new CustomSimpleTexture2D(Color.blue, 1, 1);
+         var dragTexture = new CustomSimpleTexture2D(Color.green, 1, 1);
+
+         var drag = new MouseDrag();
+         var click = new MouseClick();
+         var screenSize = new ScreenSize();
+
+         var createConnectionButtonSize = new PositionAdapter(new Vector2(25, 25));
+         
+         var mouse = new MousePosition();
+         
+         var dragUnpinnedSize = new PositionAdapter(new Vector2(NodeDragWidth, NodeHeight));
+         var dragUnpinnedPosition = new OffsetPosition(mouse, new PositionAdapter(-dragUnpinnedSize.Get() / 2));
+
+         var dragPinnedSize = new PositionAdapter(new Vector2(DragPinnedWidth, _editNodePanelRect.Get().size.y));
+         
+         var dragPinnedPosition = new XVector(new OffsetPosition(_editNodePanelPosition,
+             new PositionAdapter(_editNodePanelRect.Get().size)));
+         
+         var dragPinnedRect = new CustomRect(dragPinnedPosition, dragPinnedSize);
+
+         var unpinnedPosition = new OffsetPosition(dragUnpinnedPosition, new XVector(dragUnpinnedSize));
+         var unpinnedSize = new PositionAdapter(new Vector2(NodeHeight, NodeWidth));
+
+         var createConnectionButtonPinnedPosition = new OffsetPosition(
+             _editNodePanelPosition, 
+             new XVector(new PositionAdapter(_editNodePanelRect.Get().size)));
+
+         var createConnectionButtonUnpinnedPosition =
+             new OffsetPosition(unpinnedPosition, new XVector(unpinnedSize));
          
          var panelSize = new OffsetPosition(new YVector(screenSize),
              new PositionAdapter(new Vector2(NodeGeneratorWidth, 0)));
@@ -62,71 +96,45 @@ public class DialogueWindow : EditorWindow
              new PositionAdapter(-new Vector2(NodeGeneratorWidth, 0)));
          
          var panelRect = new CustomRect(panelPosition, panelSize);
-
+         
          var createNodeButtonSize =
              new PositionAdapter(new Vector2(panelRect.Get().width, CreateNodeButtonHeight));
          
          var createNodeButtonRect = new CustomRect(panelPosition, createNodeButtonSize);
          
-         _nodeGenerator = new NodeGenerator(_nodeFactory, panelTexture, panelRect, createNodeButtonRect); 
+         var createButton = new CustomButton(createNodeButtonRect, new CustomSimpleTexture2D(Color.cyan, 1,1), "Create node");
          
-         _updates.Add(createNodeButtonRect, panelRect, _nodeGenerator);
-     }
-     
-     private void InitNodeFactory()
-     {
-         var nodeTexture = new CustomSimpleTexture2D(Color.blue, 1, 1);
-         var dragTexture = new CustomSimpleTexture2D(Color.green, 1, 1);
-
-         var dragInput = new MouseDrag();
-         var selectInput = new MouseClick();
-
-         var createConnectionButtonSize = new PositionAdapter(new Vector2(25, 25));
+         var createButtonClick = new Predicates(
+             new InputToPredicateAdapter(click),
+             new InRect(createNodeButtonRect, mouse));
          
-         var nodeDraggerPosition = new MousePosition();
-         
-         var dragUnpinnedSize = new PositionAdapter(new Vector2(NodeDragWidth, NodeHeight));
-         var dragUnpinnedPosition = new OffsetPosition(nodeDraggerPosition, new PositionAdapter(-dragUnpinnedSize.Get() / 2));
+         var createConnectionButtonTexture = new CustomSimpleTexture2D(Color.cyan, 1, 1);
 
-         var dragPinnedSize = new PositionAdapter(new Vector2(DragPinnedWidth, _editNodePanelRect.Get().size.y));
-         var dragPinnedPosition = new XVector(new OffsetPosition(_editNodePanelPosition,
-             new PositionAdapter(_editNodePanelRect.Get().size)));
-         var dragPinnedRect = new CustomRect(dragPinnedPosition, dragPinnedSize);
-
-         var unpinnedPosition = new OffsetPosition(dragUnpinnedPosition, new XVector(dragUnpinnedSize));
-         var unpinnedSize = new PositionAdapter(new Vector2(NodeHeight, NodeWidth));
-
-         var createConnectionButtonPinnedPosition = new OffsetPosition(_editNodePanelPosition, new XVector(new PositionAdapter(_editNodePanelRect.Get().size)));
-
-         var createConnectionButtonUnpinnedPosition =
-             new OffsetPosition(unpinnedPosition, new XVector(unpinnedSize));
-         
-         _nodeFactory = new SpeechNodeFactory(
+         var nodeFactory = new SpeechNodeFactory(
              nodeTexture,
              dragTexture,
-             nodeDraggerPosition,
-             _editNodePanelRect, 
-             dragInput,
-             selectInput,
+             createConnectionButtonTexture,
+             mouse,
+             _editNodePanelRect,
+             drag,
+             click,
              dragUnpinnedSize,
              unpinnedSize,
              createConnectionButtonSize,
              dragUnpinnedPosition,
              dragPinnedRect,
-             unpinnedPosition, 
+             unpinnedPosition,
              createConnectionButtonPinnedPosition,
              createConnectionButtonUnpinnedPosition,
+             createButtonClick,
              _updates,
-             GetCustomButtonFactory()
-             );
+             "+"
+         );
+         
+         _updates.Add(nodeFactory, createNodeButtonRect, createButton);
      }
 
-     private CustomButtonFactory GetCustomButtonFactory()
-     {
-         var texture = new CustomSimpleTexture2D(Color.cyan, 1, 1);
-         return new CustomButtonFactory(texture, "+");
-     }
-     
+
      private void InitEditNodePanel()
      {
          var color = Color.Lerp(Color.blue, Color.white, 0.5f);
