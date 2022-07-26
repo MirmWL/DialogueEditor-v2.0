@@ -1,6 +1,6 @@
 ﻿using EditorInput;
 
-public class SpeechNodeFactory : INodeFactory
+public class SpeechNodeFactory : INodeFactory, IUpdate
 {
     private readonly IPosition _nodeDraggerPosition;
     private readonly IPosition _dragUnpinnedSize;
@@ -12,16 +12,19 @@ public class SpeechNodeFactory : INodeFactory
     private readonly IPosition _dragUnpinnedPosition;
     private readonly ITexture2D _nodeTexture;
     private readonly ITexture2D _dragTexture;
+    private readonly ITexture2D _createConnectionButtonTexture;
     private readonly IRect _dragPinnedRect;
     private readonly IRect _editNodePanelRect;
     private readonly IInput _dragInput;
     private readonly IInput _selectInput;
+    private readonly IPredicate _createPredicate;
     private readonly Updates _updates;
-    private readonly CustomButtonFactory _customButtonFactory;
+    private readonly string _createConnectionButtonLabel;
 
     public SpeechNodeFactory(
         ITexture2D nodeTexture, 
         ITexture2D dragTexture, 
+        ITexture2D createConnectionButtonTexture,
         IPosition nodeDraggerPosition, 
         IRect editNodePanelRect,
         IInput dragInput, 
@@ -34,12 +37,14 @@ public class SpeechNodeFactory : INodeFactory
         IPosition unpinnedPosition, 
         IPosition createConnectionButtonPinnedPosition,
         IPosition createConnectionButtonUnpinnedPosition,
+        IPredicate createPredicate,
         Updates updates,
-        CustomButtonFactory customButtonFactory)
+        string createConnectionButtonLabel)
 
     {
         _nodeTexture = nodeTexture;
         _dragTexture = dragTexture;
+        _createConnectionButtonTexture = createConnectionButtonTexture;
         _nodeDraggerPosition = nodeDraggerPosition;
         _editNodePanelRect = editNodePanelRect;
         _dragInput = dragInput;
@@ -52,10 +57,17 @@ public class SpeechNodeFactory : INodeFactory
         _unpinnedPosition = unpinnedPosition;
         _createConnectionButtonPinnedPosition = createConnectionButtonPinnedPosition;
         _createConnectionButtonUnpinnedPosition = createConnectionButtonUnpinnedPosition;
+        _createPredicate = createPredicate;
         _updates = updates;
-        _customButtonFactory = customButtonFactory;
+        _createConnectionButtonLabel = createConnectionButtonLabel;
     }
-
+    
+    public void Update()
+    {
+        if (_createPredicate.Execute())
+            Create();
+    }
+    
     public INode Create()
     {
         var unpinnedRect = new CustomRect(_unpinnedPosition, _unpinnedSize);
@@ -96,7 +108,10 @@ public class SpeechNodeFactory : INodeFactory
             dragRect,
             pinPredicate);
 
-        var createConnectionButton = _customButtonFactory.Create(createConnectionButtonRect);
+        var createConnectionButton = new CustomButton(
+            createConnectionButtonRect, 
+            _createConnectionButtonTexture,
+            _createConnectionButtonLabel);
 
         _updates.Add(updateDragUnpinnedRect,
             updateRect,
