@@ -1,6 +1,6 @@
 ﻿using EditorInput;
 
-public class SpeechNodeFactory : INodeFactory, IUpdate
+public class NodeFactory : IUpdate
 {
     private readonly IPosition _nodeDraggerPosition;
     private readonly IPosition _dragUnpinnedSize;
@@ -21,7 +21,7 @@ public class SpeechNodeFactory : INodeFactory, IUpdate
     private readonly Updates _updates;
     private readonly string _createConnectionButtonLabel;
 
-    public SpeechNodeFactory(
+    public NodeFactory(
         ITexture2D nodeTexture, 
         ITexture2D dragTexture, 
         ITexture2D createConnectionButtonTexture,
@@ -68,7 +68,7 @@ public class SpeechNodeFactory : INodeFactory, IUpdate
             Create();
     }
     
-    public INode Create()
+    private void Create()
     {
         var unpinnedRect = new CustomRect(_unpinnedPosition, _unpinnedSize);
         var dragUnpinnedRect = new CustomRect(_dragUnpinnedPosition, _dragUnpinnedSize);
@@ -118,7 +118,5 @@ public class SpeechNodeFactory : INodeFactory, IUpdate
             node,
             updateCreateConnectionButtonRect,
             createConnectionButton);
-        
-        return node;
     }
 }

@@ -110,7 +110,7 @@ public class DialogueWindow : EditorWindow
          
          var createConnectionButtonTexture = new CustomSimpleTexture2D(Color.cyan, 1, 1);
 
-         var nodeFactory = new SpeechNodeFactory(
+         var nodeFactory = new NodeFactory(
              nodeTexture,
              dragTexture,
              createConnectionButtonTexture,
