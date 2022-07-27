@@ -91,8 +91,13 @@ public class DialogueWindow : EditorWindow
              new PositionAdapter(new Vector2(panelRect.Get().width, CreateNodeButtonHeight));
          
          var createNodeButtonRect = new CustomRect(panelPosition, createNodeButtonSize);
+
+         var middleCenterStyle = new MiddleCenterAlignedStyle(new DefaultStyle());
          
-         var createButton = new CustomButton(createNodeButtonRect, new CustomSimpleTexture2D(Color.cyan, 1,1), "Create node");
+         var createButton = new CustomButton(
+             createNodeButtonRect,
+             new CustomSimpleTexture2D(Color.cyan, 1, 1),
+             middleCenterStyle, "Create node");
          
          var createButtonClick = new Predicates(
              new InputToPredicateAdapter(click),
@@ -116,12 +121,12 @@ public class DialogueWindow : EditorWindow
              unpinnedPosition,
              createConnectionButtonPinnedPosition,
              createConnectionButtonUnpinnedPosition,
+             middleCenterStyle,
              _updates,
              "+"
          );
 
          var factoryRules = new NodeFactoryBusinessRules(createButtonClick, nodeFactory);
-         
          _updates.Add(createNodeButtonRect, createButton, factoryRules);
      }
 

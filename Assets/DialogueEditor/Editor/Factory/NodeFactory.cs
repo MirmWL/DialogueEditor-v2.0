@@ -9,6 +9,7 @@ public class NodeFactory
     private readonly IPosition _unpinnedPosition;
     private readonly IPosition _createConnectionButtonPinnedPosition;
     private readonly IPosition _createConnectionButtonUnpinnedPosition;
+    private readonly IGUIStyle _createConnectionButtonStyle;
     private readonly IPosition _dragUnpinnedPosition;
     private readonly ITexture2D _nodeTexture;
     private readonly ITexture2D _dragTexture;
@@ -36,6 +37,7 @@ public class NodeFactory
         IPosition unpinnedPosition, 
         IPosition createConnectionButtonPinnedPosition,
         IPosition createConnectionButtonUnpinnedPosition,
+        IGUIStyle createConnectionButtonStyle,
         Updates updates,
         string createConnectionButtonLabel)
 
@@ -55,6 +57,7 @@ public class NodeFactory
         _unpinnedPosition = unpinnedPosition;
         _createConnectionButtonPinnedPosition = createConnectionButtonPinnedPosition;
         _createConnectionButtonUnpinnedPosition = createConnectionButtonUnpinnedPosition;
+        _createConnectionButtonStyle = createConnectionButtonStyle;
         _updates = updates;
         _createConnectionButtonLabel = createConnectionButtonLabel;
     }
@@ -102,6 +105,7 @@ public class NodeFactory
         var createConnectionButton = new CustomButton(
             createConnectionButtonRect, 
             _createConnectionButtonTexture,
+            _createConnectionButtonStyle,
             _createConnectionButtonLabel);
 
         _updates.Add(updateDragUnpinnedRect,
