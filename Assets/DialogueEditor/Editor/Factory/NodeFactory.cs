@@ -1,6 +1,6 @@
 ﻿using EditorInput;
 
-public class NodeFactory : IUpdate
+public class NodeFactory
 {
     private readonly IPosition _nodeDraggerPosition;
     private readonly IPosition _dragUnpinnedSize;
@@ -17,7 +17,6 @@ public class NodeFactory : IUpdate
     private readonly IRect _editNodePanelRect;
     private readonly IInput _dragInput;
     private readonly IInput _selectInput;
-    private readonly IPredicate _createPredicate;
     private readonly Updates _updates;
     private readonly string _createConnectionButtonLabel;
 
@@ -37,7 +36,6 @@ public class NodeFactory : IUpdate
         IPosition unpinnedPosition, 
         IPosition createConnectionButtonPinnedPosition,
         IPosition createConnectionButtonUnpinnedPosition,
-        IPredicate createPredicate,
         Updates updates,
         string createConnectionButtonLabel)
 
@@ -57,18 +55,11 @@ public class NodeFactory : IUpdate
         _unpinnedPosition = unpinnedPosition;
         _createConnectionButtonPinnedPosition = createConnectionButtonPinnedPosition;
         _createConnectionButtonUnpinnedPosition = createConnectionButtonUnpinnedPosition;
-        _createPredicate = createPredicate;
         _updates = updates;
         _createConnectionButtonLabel = createConnectionButtonLabel;
     }
-    
-    public void Update()
-    {
-        if (_createPredicate.Execute())
-            Create();
-    }
-    
-    private void Create()
+
+    public INode Create()
     {
         var unpinnedRect = new CustomRect(_unpinnedPosition, _unpinnedSize);
         var dragUnpinnedRect = new CustomRect(_dragUnpinnedPosition, _dragUnpinnedSize);
@@ -118,5 +109,7 @@ public class NodeFactory : IUpdate
             node,
             updateCreateConnectionButtonRect,
             createConnectionButton);
+
+        return node;
     }
 }

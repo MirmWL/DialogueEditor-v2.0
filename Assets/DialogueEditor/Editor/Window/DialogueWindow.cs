@@ -37,7 +37,6 @@ public class DialogueWindow : EditorWindow
          _updates = new Updates();
          
          InitNodeFactory();
-         InitNodeGenerator();
          InitEditNodePanel();
      }
 
@@ -46,15 +45,6 @@ public class DialogueWindow : EditorWindow
          _updates.Update();
      }
 
-     private void InitNodeGenerator()
-     {
-       
-         
-         var panelTexture = new CustomSimpleTexture2D(Color.black, 1, 1);
-         
-         
-     }
-     
      private void InitNodeFactory()
      {
          var nodeTexture = new CustomSimpleTexture2D(Color.blue, 1, 1);
@@ -126,12 +116,13 @@ public class DialogueWindow : EditorWindow
              unpinnedPosition,
              createConnectionButtonPinnedPosition,
              createConnectionButtonUnpinnedPosition,
-             createButtonClick,
              _updates,
              "+"
          );
+
+         var factoryRules = new NodeFactoryBusinessRules(createButtonClick, nodeFactory);
          
-         _updates.Add(nodeFactory, createNodeButtonRect, createButton);
+         _updates.Add(createNodeButtonRect, createButton, factoryRules);
      }
 
 
