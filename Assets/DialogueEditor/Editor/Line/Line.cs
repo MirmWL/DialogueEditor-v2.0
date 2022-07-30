@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 
-public class Connection : IUpdate
+public class Line : IUpdate
 {
     private readonly KeyValuePair<IPosition, IPosition> _connection;
     
-    public Connection(KeyValuePair<IPosition, IPosition> connection)
+    public Line(KeyValuePair<IPosition, IPosition> connection)
     {
         _connection = connection;
     }
