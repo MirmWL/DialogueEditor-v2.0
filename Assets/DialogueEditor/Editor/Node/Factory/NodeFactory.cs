@@ -11,7 +11,7 @@ public class NodeFactory
     private readonly IInput _selectInput;
     private readonly IRect _dragUnpinnedRect;
     private readonly IRect _unpinnedRect;
-    private readonly PinPredicateFactory _pinFactory;
+    private readonly IPredicate _pin;
 
     public NodeFactory(
         ITexture2D nodeTexture, 
@@ -23,7 +23,7 @@ public class NodeFactory
         IRect dragPinnedRect, 
         IRect dragUnpinnedRect,
         IRect unpinnedRect,
-        PinPredicateFactory pinFactory)
+        IPredicate pin)
     {
         _nodeTexture = nodeTexture;
         _dragTexture = dragTexture;
@@ -34,14 +34,13 @@ public class NodeFactory
         _dragPinnedRect = dragPinnedRect;
         _dragUnpinnedRect = dragUnpinnedRect;
         _unpinnedRect = unpinnedRect;
-        _pinFactory = pinFactory;
+        _pin = pin;
     }
 
     public INode Create()
     {
-        var pinPredicate = _pinFactory.Create(_dragUnpinnedRect);
-        var rect = new RectFork(pinPredicate, _editNodePanelRect, _unpinnedRect);
-        var dragRect = new RectFork(pinPredicate, _dragPinnedRect, _dragUnpinnedRect);
+        var rect = new RectFork(_pin, _editNodePanelRect, _unpinnedRect);
+        var dragRect = new RectFork(_pin, _dragPinnedRect, _dragUnpinnedRect);
 
         var inDragRect = new InRect(dragRect, _nodeDraggerPosition);
 
@@ -59,7 +58,7 @@ public class NodeFactory
             _dragTexture,
             cachedRect,
             cachedDragRect,
-            pinPredicate);
+            _pin);
         
         return node;
     }
