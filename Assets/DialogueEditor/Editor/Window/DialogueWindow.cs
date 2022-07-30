@@ -1,4 +1,5 @@
-﻿using EditorInput.Mouse;
+﻿using EditorInput;
+using EditorInput.Mouse;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,7 +16,9 @@ public class DialogueWindow : EditorWindow
     private const int EditNodePanelWidth = 300;
     private const int EditNodePanelHeight = 300;
     private const float EditNodePanelBorderWidth = 2;
+    
     private const float DragPinnedWidth = 25;
+    
     private const float NodeHeight = 100;
     private const float NodeWidth = 100;
     private const float NodeDragWidth = 25;
@@ -32,7 +35,7 @@ public class DialogueWindow : EditorWindow
      {
          var editNodePanelSize = new PositionAdapter(new Vector2(EditNodePanelWidth, EditNodePanelHeight));
          _editNodePanelPosition = new PositionAdapter(Vector2.zero);
-         _editNodePanelRect = new CustomRect(_editNodePanelPosition, editNodePanelSize);
+         _editNodePanelRect = new CachedRect(_editNodePanelPosition, editNodePanelSize);
 
          _updates = new Updates();
          
@@ -66,7 +69,7 @@ public class DialogueWindow : EditorWindow
          var dragPinnedPosition = new XVector(new OffsetPosition(_editNodePanelPosition,
              new PositionAdapter(_editNodePanelRect.Get().size)));
          
-         var dragPinnedRect = new CustomRect(dragPinnedPosition, dragPinnedSize);
+         var dragPinnedRect = new CachedRect(dragPinnedPosition, dragPinnedSize);
 
          var unpinnedPosition = new OffsetPosition(dragUnpinnedPosition, new XVector(dragUnpinnedSize));
          var unpinnedSize = new PositionAdapter(new Vector2(NodeHeight, NodeWidth));
@@ -85,12 +88,12 @@ public class DialogueWindow : EditorWindow
              new XVector(screenSize), 
              new PositionAdapter(-new Vector2(NodeGeneratorWidth, 0)));
          
-         var panelRect = new CustomRect(panelPosition, panelSize);
+         var panelRect = new CachedRect(panelPosition, panelSize);
          
          var createNodeButtonSize =
              new PositionAdapter(new Vector2(panelRect.Get().width, CreateNodeButtonHeight));
          
-         var createNodeButtonRect = new CustomRect(panelPosition, createNodeButtonSize);
+         var createNodeButtonRect = new CachedRect(panelPosition, createNodeButtonSize);
 
          var middleCenterStyle = new MiddleCenterAlignedStyle(new DefaultStyle());
          
