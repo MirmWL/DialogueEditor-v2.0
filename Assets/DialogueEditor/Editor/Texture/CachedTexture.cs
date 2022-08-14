@@ -2,12 +2,12 @@
 
 public class CachedTexture : ITexture2D
 {
-    private readonly IPredicate _returnCached;
+    private readonly ICondition _returnCached;
     private readonly ITexture2D _texture;
     
     private ITexture2D _cached;
 
-    public CachedTexture(IPredicate returnCached, ITexture2D texture)
+    public CachedTexture(ICondition returnCached, ITexture2D texture)
     {
         _returnCached = returnCached;
         _texture = texture;

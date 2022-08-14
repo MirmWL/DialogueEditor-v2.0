@@ -3,10 +3,10 @@
 public class CachedRect : IRect
 {
     private readonly IRect _rect;
-    private readonly IPredicate _returnCached;
+    private readonly ICondition _returnCached;
     private IRect _cached;
     
-    public CachedRect(IPredicate returnCached, IRect rect)
+    public CachedRect(ICondition returnCached, IRect rect)
     {
         _rect = rect;
         _returnCached = returnCached;

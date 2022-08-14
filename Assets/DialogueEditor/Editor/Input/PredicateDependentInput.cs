@@ -2,18 +2,18 @@
 {
     public class PredicateDependentInput : IInput
     {
-        private readonly IPredicate _predicate;
+        private readonly ICondition _condition;
         private readonly IInput _input;
 
-        public PredicateDependentInput(IPredicate predicate, IInput input)
+        public PredicateDependentInput(ICondition condition, IInput input)
         {
-            _predicate = predicate;
+            _condition = condition;
             _input = input;
         }
 
         public bool HasInput()
         {
-            return _predicate.Execute() && _input.HasInput();
+            return _condition.Execute() && _input.HasInput();
         }
     }
 }

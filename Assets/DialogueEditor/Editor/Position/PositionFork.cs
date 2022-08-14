@@ -2,19 +2,19 @@
 
 public class PositionFork : IPosition
 {
-    private readonly IPredicate _predicate;
+    private readonly ICondition _condition;
     private readonly IPosition _first;
     private readonly IPosition _second;
 
-    public PositionFork(IPredicate predicate, IPosition first, IPosition second)
+    public PositionFork(ICondition condition, IPosition first, IPosition second)
     {
-        _predicate = predicate;
+        _condition = condition;
         _first = first;
         _second = second;
     }
 
     public Vector2 Get()
     {
-        return _predicate.Execute() ? _first.Get() : _second.Get();
+        return _condition.Execute() ? _first.Get() : _second.Get();
     }
 }

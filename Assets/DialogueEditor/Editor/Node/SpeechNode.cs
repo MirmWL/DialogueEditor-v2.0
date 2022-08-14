@@ -8,7 +8,7 @@ public class SpeechNode : INode
     private readonly IRect _rect;
     private readonly IRect _dragRect;
     private readonly IInput _clickInput;
-    private readonly IPredicate _pinned;
+    private readonly ICondition _pinned;
     
     private readonly Texture2D _mainTexture;
     private readonly Texture2D _dragTexture;
@@ -25,7 +25,7 @@ public class SpeechNode : INode
         ITexture2D dragTexture,
         IRect rect, 
         IRect dragRect, 
-        IPredicate pinned)
+        ICondition pinned)
     {
         _clickInput = clickInput;
         _mainTexture = mainTexture.Get();

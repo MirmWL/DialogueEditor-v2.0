@@ -1,17 +1,17 @@
 ﻿public class PredicateDependentUpdate : IUpdate
 {
     private readonly IUpdate _update;
-    private readonly IPredicate _predicate;
+    private readonly ICondition _condition;
 
-    public PredicateDependentUpdate(IUpdate update, IPredicate predicate)
+    public PredicateDependentUpdate(IUpdate update, ICondition condition)
     {
         _update = update;
-        _predicate = predicate;
+        _condition = condition;
     }
 
     public void Update()
     {
-        if(_predicate.Execute())
+        if(_condition.Execute())
             _update.Update();
     }
 }

@@ -2,19 +2,19 @@
 
 public class RectFork : IRect
 {
-    private readonly IPredicate _predicate;
+    private readonly ICondition _condition;
     private readonly IRect _first;
     private readonly IRect _second;
 
-    public RectFork(IPredicate predicate, IRect first, IRect second)
+    public RectFork(ICondition condition, IRect first, IRect second)
     {
-        _predicate = predicate;
+        _condition = condition;
         _first = first;
         _second = second;
     }
 
     public Rect Get()
     {
-        return _predicate.Execute() ? _first.Get() : _second.Get();
+        return _condition.Execute() ? _first.Get() : _second.Get();
     }
 }
