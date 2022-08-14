@@ -52,7 +52,7 @@ public class NodeFactory
         var dragInput = new PredicateDependentInput(inDragRect, _dragInput);
         var drag = new InputToConditionAdapter(dragInput);
         
-        var node = new SpeechNode(clickInput,
+        var node = new Node(clickInput,
             _nodeTexture,
             _dragTexture,
             new CachedRect(drag, rect),

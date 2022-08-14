@@ -3,12 +3,12 @@ using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-public class SpeechNode : INode
+public class Node : INode
 {
     private readonly IRect _rect;
     private readonly IRect _dragRect;
-    private readonly IInput _clickInput;
-    private readonly ICondition _pinned;
+    private readonly IInput _click;
+    private readonly ICondition _pin;
     
     private readonly Texture2D _mainTexture;
     private readonly Texture2D _dragTexture;
@@ -19,20 +19,20 @@ public class SpeechNode : INode
     private string _name;
     private string _phrase;
     
-    public SpeechNode(
-        IInput clickInput, 
+    public Node(
+        IInput click, 
         ITexture2D mainTexture,
         ITexture2D dragTexture,
         IRect rect, 
         IRect dragRect, 
-        ICondition pinned)
+        ICondition pin)
     {
-        _clickInput = clickInput;
+        _click = click;
         _mainTexture = mainTexture.Get();
         _dragTexture = dragTexture.Get();
         _rect = rect;
         _dragRect = dragRect;
-        _pinned = pinned;
+        _pin = pin;
     }
 
     public void Update()
@@ -47,12 +47,12 @@ public class SpeechNode : INode
         _name = EditorGUILayout.TextField(_name);
         _phrase = EditorGUILayout.TextArea(_phrase);
 
-        if (_pinned.Execute())
+        if (_pin.Execute())
             DrawEvent();
         
         GUILayout.EndArea();
         
-        if (_clickInput.HasInput())
+        if (_click.HasInput())
             Debug.Log("click");
     }
 
