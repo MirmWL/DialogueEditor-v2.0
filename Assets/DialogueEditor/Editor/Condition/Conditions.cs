@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 
-public class Predicates : IPredicate
+public class Conditions : ICondition
 {
-    private readonly IPredicate[] _predicates;
+    private readonly ICondition[] _predicates;
 
-    public Predicates(params IPredicate[] predicates)
+    public Conditions(params ICondition[] predicates)
     {
         _predicates = predicates;
     }

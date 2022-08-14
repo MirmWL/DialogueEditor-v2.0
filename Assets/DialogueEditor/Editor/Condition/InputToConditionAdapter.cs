@@ -1,10 +1,10 @@
 ﻿using EditorInput;
 
-public class InputToPredicateAdapter : IPredicate
+public class InputToConditionAdapter : ICondition
 {
     private readonly IInput _input;
 
-    public InputToPredicateAdapter(IInput input)
+    public InputToConditionAdapter(IInput input)
     {
         _input = input;
     }

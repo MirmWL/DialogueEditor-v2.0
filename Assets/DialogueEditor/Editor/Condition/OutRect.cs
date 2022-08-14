@@ -1,4 +1,4 @@
-﻿public class OutRect : IPredicate
+﻿public class OutRect : ICondition
 {
     private readonly IRect _rect;
     private readonly IPosition _position;

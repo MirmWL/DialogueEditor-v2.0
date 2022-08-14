@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InRect : IPredicate
+public class InRect : ICondition
 {
     private readonly IRect _rect;
     private readonly IPosition _position;
