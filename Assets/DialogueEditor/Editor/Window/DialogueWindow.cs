@@ -35,7 +35,7 @@ public class DialogueWindow : EditorWindow
      {
          var editNodePanelSize = new PositionAdapter(new Vector2(EditNodePanelWidth, EditNodePanelHeight));
          _editNodePanelPosition = new PositionAdapter(Vector2.zero);
-         _editNodePanelRect = new CachedRect(_editNodePanelPosition, editNodePanelSize);
+         _editNodePanelRect = new CachedRect(new Never(), new CustomRect(_editNodePanelPosition, editNodePanelSize));
 
          _updates = new Updates();
          
@@ -57,23 +57,26 @@ public class DialogueWindow : EditorWindow
          var click = new MouseClick();
          var screenSize = new ScreenSize();
 
-         var createConnectionButtonSize = new PositionAdapter(new Vector2(25, 25));
-         
+         var never = new Never();
+
          var mouse = new MousePosition();
          
          var dragUnpinnedSize = new PositionAdapter(new Vector2(NodeDragWidth, NodeHeight));
          var dragUnpinnedPosition = new OffsetPosition(mouse, new PositionAdapter(-dragUnpinnedSize.Get() / 2));
-
+         var dragUnpinnedRect = new CustomRect(dragUnpinnedPosition, dragUnpinnedSize);
+         
          var dragPinnedSize = new PositionAdapter(new Vector2(DragPinnedWidth, _editNodePanelRect.Get().size.y));
          
          var dragPinnedPosition = new XVector(new OffsetPosition(_editNodePanelPosition,
              new PositionAdapter(_editNodePanelRect.Get().size)));
          
-         var dragPinnedRect = new CachedRect(dragPinnedPosition, dragPinnedSize);
-
+         var dragPinnedRect = new CachedRect(never, new CustomRect(dragPinnedPosition, dragPinnedSize));
+         
          var unpinnedPosition = new OffsetPosition(dragUnpinnedPosition, new XVector(dragUnpinnedSize));
          var unpinnedSize = new PositionAdapter(new Vector2(NodeHeight, NodeWidth));
-
+         
+         var createConnectionButtonSize = new PositionAdapter(new Vector2(25, 25));
+         
          var createConnectionButtonPinnedPosition = new OffsetPosition(
              _editNodePanelPosition, 
              new XVector(new PositionAdapter(_editNodePanelRect.Get().size)));
@@ -88,12 +91,12 @@ public class DialogueWindow : EditorWindow
              new XVector(screenSize), 
              new PositionAdapter(-new Vector2(NodeGeneratorWidth, 0)));
          
-         var panelRect = new CachedRect(panelPosition, panelSize);
+         var panelRect = new CachedRect(never, new CustomRect(panelPosition, panelSize));
          
          var createNodeButtonSize =
              new PositionAdapter(new Vector2(panelRect.Get().width, CreateNodeButtonHeight));
          
-         var createNodeButtonRect = new CachedRect(panelPosition, createNodeButtonSize);
+         var createNodeButtonRect = new CachedRect(never, new CustomRect(panelPosition, createNodeButtonSize));
 
          var middleCenterStyle = new MiddleCenterAlignedStyle(new DefaultStyle());
          
@@ -102,8 +105,8 @@ public class DialogueWindow : EditorWindow
              new CustomSimpleTexture2D(Color.cyan, 1, 1),
              middleCenterStyle, "Create node");
          
-         var createButtonClick = new Predicates(
-             new InputToPredicateAdapter(click),
+         var createButtonClick = new Conditions(
+             new InputToConditionAdapter(click),
              new InRect(createNodeButtonRect, mouse));
          
          var createConnectionButtonTexture = new CustomSimpleTexture2D(Color.cyan, 1, 1);
@@ -111,25 +114,16 @@ public class DialogueWindow : EditorWindow
          var nodeFactory = new NodeFactory(
              nodeTexture,
              dragTexture,
-             createConnectionButtonTexture,
              mouse,
              _editNodePanelRect,
              drag,
              click,
-             dragUnpinnedSize,
-             unpinnedSize,
-             createConnectionButtonSize,
-             dragUnpinnedPosition,
              dragPinnedRect,
-             unpinnedPosition,
-             createConnectionButtonPinnedPosition,
-             createConnectionButtonUnpinnedPosition,
-             middleCenterStyle,
-             _updates,
-             "+"
-         );
+             dragUnpinnedRect,
+             dragPinnedRect,
+             new PinConditionFactory(mouse, dragUnpinnedPosition, _editNodePanelRect, drag, dragUnpinnedRect));
 
-         var factoryRules = new NodeFactoryBusinessRules(createButtonClick, nodeFactory);
+         var factoryRules = new NodeFactoryOwner(createButtonClick, nodeFactory);
          _updates.Add(createNodeButtonRect, createButton, factoryRules);
      }
 
