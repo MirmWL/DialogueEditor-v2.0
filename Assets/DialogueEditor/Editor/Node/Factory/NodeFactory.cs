@@ -11,19 +11,19 @@ public class NodeFactory
     private readonly IInput _selectInput;
     private readonly IRect _dragUnpinnedRect;
     private readonly IRect _unpinnedRect;
-    private readonly IPredicate _pin;
-
+    private readonly PinConditionFactory _pinConditionFactory;
+    
     public NodeFactory(
         ITexture2D nodeTexture, 
         ITexture2D dragTexture, 
-        IPosition nodeDraggerPosition, 
+        IPosition nodeDraggerPosition,
         IRect editNodePanelRect,
         IInput dragInput, 
         IInput selectInput, 
         IRect dragPinnedRect, 
         IRect dragUnpinnedRect,
         IRect unpinnedRect,
-        IPredicate pin)
+        PinConditionFactory pinConditionFactory)
     {
         _nodeTexture = nodeTexture;
         _dragTexture = dragTexture;
@@ -34,13 +34,15 @@ public class NodeFactory
         _dragPinnedRect = dragPinnedRect;
         _dragUnpinnedRect = dragUnpinnedRect;
         _unpinnedRect = unpinnedRect;
-        _pin = pin;
+        _pinConditionFactory = pinConditionFactory;
     }
 
     public INode Create()
     {
-        var rect = new RectFork(_pin, _editNodePanelRect, _unpinnedRect);
-        var dragRect = new RectFork(_pin, _dragPinnedRect, _dragUnpinnedRect);
+        var pin = _pinConditionFactory.Create();
+        
+        var rect = new RectFork(pin, _editNodePanelRect, _unpinnedRect);
+        var dragRect = new RectFork(pin, _dragPinnedRect, _dragUnpinnedRect);
 
         var inDragRect = new InRect(dragRect, _nodeDraggerPosition);
 
@@ -48,17 +50,14 @@ public class NodeFactory
         var clickInput = new EventInput(new PredicateDependentInput(inRect, _selectInput));
         
         var dragInput = new PredicateDependentInput(inDragRect, _dragInput);
-        var drag = new InputToPredicateAdapter(dragInput);
-        
-        var cachedRect = new CachedRect(drag, rect);
-        var cachedDragRect = new CachedRect(drag, dragRect);
+        var drag = new InputToConditionAdapter(dragInput);
         
         var node = new SpeechNode(clickInput,
             _nodeTexture,
             _dragTexture,
-            cachedRect,
-            cachedDragRect,
-            _pin);
+            new CachedRect(drag, rect),
+            new CachedRect(drag, dragRect),
+            pin);
         
         return node;
     }
