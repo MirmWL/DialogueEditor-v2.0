@@ -123,8 +123,8 @@ public class DialogueWindow : EditorWindow
              dragPinnedRect,
              new PinConditionFactory(mouse, dragUnpinnedPosition, _editNodePanelRect, drag, dragUnpinnedRect));
 
-         var factoryRules = new NodeFactoryOwner(createButtonClick, nodeFactory);
-         _updates.Add(createNodeButtonRect, createButton, factoryRules);
+         var nodeFactoryOwner = new NodeFactoryOwner(createButtonClick, nodeFactory, _updates);
+         _updates.Add(createButton, nodeFactoryOwner);
      }
 
 
