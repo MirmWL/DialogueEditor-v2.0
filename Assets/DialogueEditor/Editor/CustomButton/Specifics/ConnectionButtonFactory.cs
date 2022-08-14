@@ -7,8 +7,8 @@ public class ConnectionButtonFactory
     private readonly IPosition _size;
     private readonly ITexture2D _texture;
     private readonly IGUIStyle _style;
-    private readonly Updates _updates;
     private readonly string _label;
+    private readonly PinConditionFactory _pinFactory;
 
     public ConnectionButtonFactory(
         IPosition pinnedPosition,
@@ -16,26 +16,28 @@ public class ConnectionButtonFactory
         IPosition size,
         ITexture2D texture,
         IGUIStyle style,
-        Updates updates,
-        string label)
+        string label, 
+        PinConditionFactory pinFactory)
     {
         _pinnedPosition = pinnedPosition;
         _unpinnedPosition = unpinnedPosition;
         _size = size;
         _texture = texture;
         _style = style;
-        _updates = updates;
         _label = label;
+        _pinFactory = pinFactory;
     }
 
-    public CustomButton Create(IPredicate pin, IInput dragInput)
+    public CustomButton Create()
     {
+        var pin = _pinFactory.Create();
+        
         var position = new PositionFork(pin, 
             _pinnedPosition,
             _unpinnedPosition);
         
         var rect = new CachedRect(
-            new InputToPredicateAdapter(new EventInput(dragInput)),
+            new InputToConditionAdapter(new EventInput(dragInput)),
             new CustomRect(position, _size));
 
         var button = new CustomButton(rect, _texture, _style, _label);
