@@ -14,7 +14,7 @@ public class Node : INode
     private readonly Texture2D _dragTexture;
     private SerializedObject _eventSerializedObject;
     
-    private EventBase _eventBase;
+    private EventStorage _eventStorage;
 
     private string _name;
     private string _phrase;
@@ -58,17 +58,17 @@ public class Node : INode
 
     private void DrawEvent()
     {
-        var eventBase = (EventBase)EditorGUILayout.ObjectField(_eventBase, typeof(EventBase));
+        var eventBase = (EventStorage)EditorGUILayout.ObjectField(_eventStorage, typeof(EventStorage));
         
-        if (_eventBase != eventBase)
+        if (_eventStorage != eventBase)
         {
-            _eventBase = eventBase;
-            _eventSerializedObject = new SerializedObject(_eventBase);
+            _eventStorage = eventBase;
+            _eventSerializedObject = new SerializedObject(_eventStorage);
         }
         
-        if (_eventBase == null) return;
+        if (_eventStorage == null) return;
 
-        var property = _eventSerializedObject.FindProperty(nameof(_eventBase.Event));
+        var property = _eventSerializedObject.FindProperty(nameof(_eventStorage.Event));
         EditorGUILayout.PropertyField(property);
     }
 }
