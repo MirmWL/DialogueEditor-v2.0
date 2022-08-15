@@ -1,5 +1,4 @@
-﻿using EditorInput;
-using EditorInput.Mouse;
+﻿using EditorInput.Mouse;
 using UnityEditor;
 using UnityEngine;
 
@@ -50,8 +49,8 @@ public class DialogueWindow : EditorWindow
 
      private void InitNodeFactory()
      {
-         var nodeTexture = new CustomSimpleTexture2D(Color.blue, 1, 1);
-         var dragTexture = new CustomSimpleTexture2D(Color.green, 1, 1);
+         var nodeTexture = new AppliedTexture(new CustomSimpleTexture2D(Color.blue, 1, 1));
+         var dragTexture = new AppliedTexture(new CustomSimpleTexture2D(Color.green, 1, 1));
 
          var drag = new MouseDrag();
          var click = new MouseClick();
@@ -100,7 +99,7 @@ public class DialogueWindow : EditorWindow
 
          var middleCenterStyle = new MiddleCenterAlignedStyle(new DefaultStyle());
          
-         var createButton = new CustomButton(
+         var createButton = new CustomTextLabel(
              createNodeButtonRect,
              new CustomSimpleTexture2D(Color.cyan, 1, 1),
              middleCenterStyle, "Create node");
@@ -109,7 +108,7 @@ public class DialogueWindow : EditorWindow
              new InputToConditionAdapter(click),
              new InRect(createNodeButtonRect, mouse));
          
-         var createConnectionButtonTexture = new CustomSimpleTexture2D(Color.cyan, 1, 1);
+         var createConnectionButtonTexture = new AppliedTexture(new CustomSimpleTexture2D(Color.cyan, 1, 1));
 
          var nodeFactory = new NodeFactory(
              nodeTexture,
