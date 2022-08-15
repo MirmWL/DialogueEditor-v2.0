@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class EventBase : MonoBehaviour
+public class EventStorage : MonoBehaviour
 {
     [HideInInspector] public UnityEvent Event;
 }
