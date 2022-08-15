@@ -17,7 +17,6 @@ public class CustomSimpleTexture2D : ITexture2D
     {
         var texture = new Texture2D(_width, _height);
         texture.SetPixel(0, 0, _color);
-        texture.Apply();
         
         return texture;
     }

@@ -20,9 +20,9 @@ public class CustomBorderTexture2D : ITexture2D
     {
         var texture = new Texture2D(_width, _height);
 
-        for (int x = 0; x < texture.width; x++)
+        for (var x = 0; x < texture.width; x++)
         {
-            for (int y = 0; y < texture.height; y++)
+            for (var y = 0; y < texture.height; y++)
             {
                 if (x < _borderWidth || x > texture.width - 1 - _borderWidth)
                     texture.SetPixel(x, y, _color);
@@ -30,8 +30,6 @@ public class CustomBorderTexture2D : ITexture2D
                     texture.SetPixel(x, y, _color);
             }
         }
-       
-        texture.Apply();
         return texture;
     }
 }
