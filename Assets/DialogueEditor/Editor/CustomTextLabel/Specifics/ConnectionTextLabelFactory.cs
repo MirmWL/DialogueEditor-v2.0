@@ -1,6 +1,6 @@
 ﻿using EditorInput;
 
-public class ConnectionButtonFactory
+public class ConnectionTextLabelFactory
 {
     private readonly IPosition _pinnedPosition;
     private readonly IPosition _unpinnedPosition;
@@ -10,7 +10,7 @@ public class ConnectionButtonFactory
     private readonly string _label;
     private readonly PinConditionFactory _pinFactory;
 
-    public ConnectionButtonFactory(
+    public ConnectionTextLabelFactory(
         IPosition pinnedPosition,
         IPosition unpinnedPosition,
         IPosition size,
@@ -28,7 +28,7 @@ public class ConnectionButtonFactory
         _pinFactory = pinFactory;
     }
 
-    public CustomButton Create()
+    public CustomTextLabel Create(IInput dragInput)
     {
         var pin = _pinFactory.Create();
         
@@ -37,10 +37,10 @@ public class ConnectionButtonFactory
             _unpinnedPosition);
         
         var rect = new CachedRect(
-            new InputToConditionAdapter(new EventInput(dragInput)),
+            new Not(new InputToConditionAdapter(new EventInput(dragInput))),
             new CustomRect(position, _size));
 
-        var button = new CustomButton(rect, _texture, _style, _label);
+        var button = new CustomTextLabel(rect, _texture, _style, _label);
 
         return button;
     }
